@@ -1,0 +1,136 @@
+{
+  "tournament": {
+    "metadata": {
+      "name": "22-Player Singles Round Robin in Teams",
+      "type": "SINGLES_ROUND_ROBIN_TEAMS",
+      "total_players": 22,
+      "total_rounds": 10,
+      "courts": 5,
+      "iron_players": [11, 22],
+      "generated": "2025-01-09T22:34:01Z",
+      "algorithm": "GreedyBalance22Player"
+    },
+    "matches": [
+      {
+        "round": 1,
+        "court": 1,
+        "team1": [22, 20],
+        "team2": [18, 19],
+        "display": "R1-C1: P22,P20 vs P18,P19"
+      },
+      {
+        "round": 1,
+        "court": 2,
+        "team1": [10, 4],
+        "team2": [6, 5],
+        "display": "R1-C2: P10,P4 vs P6,P5"
+      },
+      {
+        "round": 1,
+        "court": 3,
+        "team1": [8, 7],
+        "team2": [15, 16],
+        "display": "R1-C3: P8,P7 vs P15,P16"
+      },
+      {
+        "round": 1,
+        "court": 4,
+        "team1": [3, 17],
+        "team2": [14, 9],
+        "display": "R1-C4: P3,P17 vs P14,P9"
+      },
+      {
+        "round": 1,
+        "court": 5,
+        "team1": [13, 12],
+        "team2": [11, 21],
+        "display": "R1-C5: P13,P12 vs P11,P21"
+      },
+      {
+        "round": 2,
+        "court": 1,
+        "team1": [22, 21],
+        "team2": [18, 20],
+        "display": "R2-C1: P22,P21 vs P18,P20"
+      },
+      {
+        "round": 2,
+        "court": 2,
+        "team1": [5, 2],
+        "team2": [6, 7],
+        "display": "R2-C2: P5,P2 vs P6,P7"
+      },
+      {
+        "round": 2,
+        "court": 3,
+        "team1": [10, 1],
+        "team2": [8, 9],
+        "display": "R2-C3: P10,P1 vs P8,P9"
+      },
+      {
+        "round": 2,
+        "court": 4,
+        "team1": [11, 13],
+        "team2": [14, 15],
+        "display": "R2-C4: P11,P13 vs P14,P15"
+      },
+      {
+        "round": 2,
+        "court": 5,
+        "team1": [19, 12],
+        "team2": [16, 17],
+        "display": "R2-C5: P19,P12 vs P16,P17"
+      }
+    ],
+    "rounds_detail": [
+      {
+        "round": 1,
+        "courts": [
+          { "court": 1, "players": [22, 20, 18, 19] },
+          { "court": 2, "players": [10, 4, 6, 5] },
+          { "court": 3, "players": [8, 7, 15, 16] },
+          { "court": 4, "players": [3, 17, 14, 9] },
+          { "court": 5, "players": [13, 12, 11, 21] }
+        ],
+        "sitting_out": [1, 2]
+      },
+      {
+        "round": 2,
+        "courts": [
+          { "court": 1, "players": [22, 21, 18, 20] },
+          { "court": 2, "players": [5, 2, 6, 7] },
+          { "court": 3, "players": [10, 1, 8, 9] },
+          { "court": 4, "players": [11, 13, 14, 15] },
+          { "court": 5, "players": [19, 12, 16, 17] }
+        ],
+        "sitting_out": [3, 4]
+      },
+      {
+        "round": 3,
+        "courts": [
+          { "court": 1, "players": [11, 22] },
+          { "court": 2, "players": [3, 4] },
+          { "court": 3, "players": [] },
+          { "court": 4, "players": [] },
+          { "court": 5, "players": [] }
+        ],
+        "sitting_out": [5, 6],
+        "note": "Partial data - full schedule in tournament_schedule_22p_20250905_223401.json"
+      }
+    ],
+    "statistics": {
+      "games_per_player": {
+        "min": 9,
+        "max": 10,
+        "iron_players_games": 10,
+        "regular_players_games": 9
+      },
+      "fairness_metrics": {
+        "partnership_repeats_max": 1,
+        "opponent_repeats_max": 3,
+        "bye_distribution": "optimal",
+        "overall_fairness": "93.5%"
+      }
+    }
+  }
+}

@@ -1,0 +1,267 @@
+/* Charity Tournament Design System - Sotos Syndrome Fundraiser */
+
+/* Enhanced animations for compassionate UI */
+@keyframes gentle-bounce {
+    0%, 20%, 53%, 80%, 100% {
+        transform: translate3d(0, 0, 0);
+    }
+    40%, 43% {
+        transform: translate3d(0, -8px, 0);
+    }
+    70% {
+        transform: translate3d(0, -4px, 0);
+    }
+    90% {
+        transform: translate3d(0, -2px, 0);
+    }
+}
+
+@keyframes soft-glow {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(74, 157, 74, 0.1);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(74, 157, 74, 0.2), 0 0 30px rgba(238, 103, 37, 0.1);
+    }
+}
+
+@keyframes heartbeat {
+    0%, 50%, 100% {
+        transform: scale(1);
+    }
+    25%, 75% {
+        transform: scale(1.05);
+    }
+}
+
+/* Custom component styles */
+.charity-header {
+    background: linear-gradient(135deg, 
+        rgba(240, 249, 240, 0.9) 0%, 
+        rgba(254, 247, 240, 0.9) 40%, 
+        rgba(225, 245, 254, 0.9) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.court-card {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, var(--bg-from) 0%, var(--bg-to) 100%);
+}
+
+.court-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    animation: soft-glow 2s ease-in-out infinite;
+}
+
+/* Court color variables */
+.court-1 { --bg-from: #e1f5fe; --bg-to: #b3e5fc; }
+.court-2 { --bg-from: #f3e5f5; --bg-to: #e1bee7; }
+.court-3 { --bg-from: #e8f5e8; --bg-to: #c8e6c8; }
+.court-4 { --bg-from: #fff3e0; --bg-to: #ffe0b2; }
+.court-5 { --bg-from: #fce4ec; --bg-to: #f8bbd9; }
+
+/* Player number enhancements */
+.player-number {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.player-number::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s;
+}
+
+.player-number:hover::before {
+    left: 100%;
+}
+
+.player-number:hover {
+    transform: scale(1.1);
+    animation: gentle-bounce 0.8s ease;
+}
+
+/* Score input enhancements */
+.score-input {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, #ffffff 0%, #f9fffe 100%);
+}
+
+.score-input:focus {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 4px rgba(74, 157, 74, 0.1), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Submit button enhancement */
+.submit-scores-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.submit-scores-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s;
+}
+
+.submit-scores-btn:hover::before {
+    left: 100%;
+}
+
+.submit-scores-btn:active {
+    transform: translateY(-2px) scale(0.98);
+}
+
+/* Round button states */
+.round-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.round-btn.active {
+    background: linear-gradient(135deg, #4a9d4a 0%, #3a7d3a 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(74, 157, 74, 0.3);
+    transform: scale(1.05);
+}
+
+.round-btn:not(.active):hover {
+    background: linear-gradient(135deg, #f0f9f0 0%, #e8f5e8 100%);
+    border-color: #4a9d4a;
+}
+
+/* Standings enhancements */
+.standings-table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.standings-table tbody tr:hover {
+    background: linear-gradient(135deg, rgba(240, 249, 240, 0.5) 0%, rgba(254, 247, 240, 0.3) 100%);
+    transform: scale(1.01);
+}
+
+/* Loading state */
+.loading .pickleball-icon {
+    animation: gentle-pulse 2s ease-in-out infinite, float 3s ease-in-out infinite;
+}
+
+/* Footer enhancements */
+footer {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.8) 0%, 
+        rgba(249, 255, 254, 0.8) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* QR Code area */
+.qr-container {
+    transition: all 0.3s ease;
+}
+
+.qr-container:hover {
+    transform: scale(1.05);
+    animation: heartbeat 1s ease-in-out;
+}
+
+/* Compassionate message styling */
+.charity-message {
+    background: linear-gradient(135deg, rgba(74, 157, 74, 0.05) 0%, rgba(238, 103, 37, 0.05) 100%);
+    border: 1px solid rgba(74, 157, 74, 0.1);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+/* Mobile-specific enhancements */
+@media (max-width: 768px) {
+    .court-card {
+        margin-bottom: 16px;
+    }
+    
+    .charity-header h1 {
+        font-size: 2rem;
+        line-height: 1.2;
+    }
+    
+    .tournament-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .submit-scores-btn {
+        width: 100%;
+        padding: 16px;
+    }
+}
+
+/* Accessibility enhancements */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .court-card {
+        border: 2px solid #333;
+    }
+    
+    .player-number {
+        border: 2px solid #fff;
+    }
+    
+    .score-input {
+        border: 2px solid #333;
+    }
+}
+
+/* Focus indicators for keyboard navigation */
+.court-card:focus-within {
+    outline: 3px solid #4a9d4a;
+    outline-offset: 2px;
+}
+
+.score-input:focus {
+    outline: none; /* Using box-shadow instead for better visual */
+}
+
+/* Print styles for tournament organizers */
+@media print {
+    body {
+        background: white !important;
+    }
+    
+    .court-card {
+        background: white !important;
+        border: 2px solid #333 !important;
+        break-inside: avoid;
+    }
+    
+    .submit-scores-btn {
+        display: none;
+    }
+    
+    footer {
+        display: none;
+    }
+}

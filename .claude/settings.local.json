@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/matth/OneDrive/Desktop/sluff-project/**)",
+      "Read(//c/Users/matth/OneDrive/Desktop/Projects/MAIOSC/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

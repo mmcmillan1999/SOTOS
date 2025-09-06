@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sotos Syndrome Fundraiser - Pickleball Tournament</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9f0',
+                            100: '#dcf2dc',
+                            200: '#bce5bc',
+                            300: '#94d394',
+                            400: '#6bb86b',
+                            500: '#4a9d4a',
+                            600: '#3a7d3a',
+                            700: '#2f5f2f',
+                            800: '#264826',
+                            900: '#1f3a1f',
+                        },
+                        secondary: {
+                            50: '#fef7f0',
+                            100: '#fdebd7',
+                            200: '#fbd3af',
+                            300: '#f7b377',
+                            400: '#f28b47',
+                            500: '#ee6725',
+                            600: '#d4511b',
+                            700: '#b13d19',
+                            800: '#8e321e',
+                            900: '#732a1c',
+                        },
+                        court: {
+                            1: '#e1f5fe',
+                            2: '#f3e5f5',
+                            3: '#e8f5e8',
+                            4: '#fff3e0',
+                            5: '#fce4ec',
+                        }
+                    },
+                    fontFamily: {
+                        'primary': ['Nunito', 'sans-serif'],
+                        'secondary': ['Inter', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'gradient-main': 'linear-gradient(135deg, #f0f9f0 0%, #fef7f0 50%, #e1f5fe 100%)',
+                        'gradient-card': 'linear-gradient(135deg, #ffffff 0%, #f9fffe 100%)',
+                        'gradient-court': 'linear-gradient(135deg, #dcf2dc 0%, #fdebd7 100%)',
+                    },
+                    animation: {
+                        'gentle-pulse': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px rgba(74, 157, 74, 0.1)',
+                        'gentle': '0 2px 15px rgba(0, 0, 0, 0.08)',
+                        'warm': '0 8px 32px rgba(238, 103, 37, 0.12)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .pickleball-icon {
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234a9d4a'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%234a9d4a' stroke-width='2'/%3E%3Ccircle cx='8' cy='8' r='1' fill='%234a9d4a'/%3E%3Ccircle cx='16' cy='8' r='1' fill='%234a9d4a'/%3E%3Ccircle cx='8' cy='16' r='1' fill='%234a9d4a'/%3E%3Ccircle cx='16' cy='16' r='1' fill='%234a9d4a'/%3E%3Ccircle cx='12' cy='12' r='1' fill='%234a9d4a'/%3E%3C/svg%3E") no-repeat center;
+            background-size: contain;
+        }
+    </style>
+</head>
+<body class="bg-gradient-main min-h-screen font-secondary text-gray-800">
+    <div class="container mx-auto px-4 py-6 max-w-7xl">
+        
+        <!-- Charity Tournament Header -->
+        <div class="bg-gradient-card rounded-2xl shadow-soft p-6 md:p-8 mb-8 text-center relative overflow-hidden">
+            <!-- Subtle background pattern -->
+            <div class="absolute inset-0 opacity-5">
+                <div class="pickleball-icon w-32 h-32 absolute top-4 right-4 animate-float"></div>
+                <div class="pickleball-icon w-24 h-24 absolute bottom-4 left-4 animate-float" style="animation-delay: 2s;"></div>
+            </div>
+            
+            <div class="relative z-10">
+                <h1 class="font-primary text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-3">
+                    SOTOS SYNDROME FUNDRAISER
+                </h1>
+                <div class="w-24 h-1 bg-gradient-to-r from-primary-400 to-secondary-400 mx-auto rounded-full mb-4"></div>
+                <p class="text-gray-600 text-lg md:text-xl font-medium mb-6 font-primary">
+                    Pickleball Tournament for Hope & Community
+                </p>
+                
+                <!-- Tournament Info Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-4xl mx-auto">
+                    <div class="bg-primary-50 rounded-xl p-4 border border-primary-100">
+                        <div class="text-primary-600 text-sm font-medium">Players</div>
+                        <div class="text-2xl font-bold text-primary-700" id="totalPlayers">22</div>
+                    </div>
+                    <div class="bg-secondary-50 rounded-xl p-4 border border-secondary-100">
+                        <div class="text-secondary-600 text-sm font-medium">Rounds</div>
+                        <div class="text-2xl font-bold text-secondary-700" id="totalRounds">10</div>
+                    </div>
+                    <div class="bg-blue-50 rounded-xl p-4 border border-blue-100">
+                        <div class="text-blue-600 text-sm font-medium">Courts</div>
+                        <div class="text-2xl font-bold text-blue-700" id="courtsPerRound">5</div>
+                    </div>
+                    <div class="bg-purple-50 rounded-xl p-4 border border-purple-100">
+                        <div class="text-purple-600 text-sm font-medium">Format</div>
+                        <div class="text-xs font-semibold text-purple-700">Doubles RR</div>
+                    </div>
+                    <div class="bg-emerald-50 rounded-xl p-4 border border-emerald-100">
+                        <div class="text-emerald-600 text-sm font-medium">Optimized</div>
+                        <div class="text-xs font-semibold text-emerald-700">97% Perfect</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Round Selector -->
+        <div class="bg-white/70 backdrop-blur-sm rounded-xl shadow-gentle p-6 mb-8">
+            <div class="flex flex-wrap justify-center gap-3" id="roundSelector">
+                <!-- Round buttons will be generated here -->
+                <button class="round-btn bg-white border-2 border-primary-200 text-primary-600 px-4 py-2 rounded-lg font-medium hover:bg-primary-50 hover:border-primary-300 transition-all duration-300 hover:scale-105 active">Round 1</button>
+                <button class="round-btn bg-white border-2 border-primary-200 text-primary-600 px-4 py-2 rounded-lg font-medium hover:bg-primary-50 hover:border-primary-300 transition-all duration-300 hover:scale-105">Round 2</button>
+                <button class="round-btn bg-white border-2 border-primary-200 text-primary-600 px-4 py-2 rounded-lg font-medium hover:bg-primary-50 hover:border-primary-300 transition-all duration-300 hover:scale-105">Round 3</button>
+                <button class="round-btn bg-white border-2 border-primary-200 text-primary-600 px-4 py-2 rounded-lg font-medium hover:bg-primary-50 hover:border-primary-300 transition-all duration-300 hover:scale-105">Round 4</button>
+                <button class="round-btn bg-white border-2 border-primary-200 text-primary-600 px-4 py-2 rounded-lg font-medium hover:bg-primary-50 hover:border-primary-300 transition-all duration-300 hover:scale-105">Round 5</button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading hidden text-center py-12" id="loading">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4 animate-gentle-pulse">
+                <div class="pickleball-icon w-8 h-8"></div>
+            </div>
+            <p class="text-gray-600 text-lg font-medium">Loading tournament data with care...</p>
+        </div>
+
+        <!-- Round Display -->
+        <div class="round-display mb-8" id="roundDisplay">
+            <!-- Round Header -->
+            <div class="bg-gradient-card rounded-xl shadow-gentle p-6 mb-6">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <h2 class="text-2xl font-bold text-gray-800 font-primary" id="roundTitle">Round 1</h2>
+                    <div class="bg-amber-50 border border-amber-200 px-4 py-2 rounded-lg" id="byePlayers">
+                        <span class="text-amber-700 text-sm font-medium">Sitting Out: </span>
+                        <span class="font-semibold text-amber-800">Players 19, 21</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Courts Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-8" id="courtsGrid">
+                
+                <!-- Court 1 -->
+                <div class="court-card bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 shadow-gentle border border-blue-200 hover:shadow-soft transition-all duration-500 hover:-translate-y-1">
+                    <div class="court-header flex items-center justify-center mb-4">
+                        <div class="bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            Court 1
+                        </div>
+                    </div>
+                    
+                    <div class="match-content bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-3">
+                        <!-- Team 1 -->
+                        <div class="team bg-white rounded-lg p-3 flex items-center justify-between shadow-sm">
+                            <div class="team-players flex items-center gap-2">
+                                <div class="player-number bg-primary-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold">14</div>
+                                <span class="font-semibold">&</span>
+                                <div class="player-number bg-primary-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold">11</div>
+                            </div>
+                            <input type="number" class="score-input w-12 h-10 text-center border-2 border-gray-200 rounded-lg focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all" placeholder="0" min="0">
+                        </div>
+                        
+                        <div class="text-center text-gray-400 font-semibold text-sm">VS</div>
+                        
+                        <!-- Team 2 -->
+                        <div class="team bg-white rounded-lg p-3 flex items-center justify-between shadow-sm">
+                            <div class="team-players flex items-center gap-2">
+                                <div class="player-number bg-secondary-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold">12</div>
+                                <span class="font-semibold">&</span>
+                                <div class="player-number bg-secondary-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold">22</div>
+                            </div>
+                            <input type="number" class="score-input w-12 h-10 text-center border-2 border-gray-200 rounded-lg focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all" placeholder="0" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Court 2 -->
+                <div class="court-card bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 shadow-gentle border border-purple-200 hover:shadow-soft transition-all duration-500 hover:-translate-y-1">
+                    <div class="court-header flex items-center justify-center mb-4">
+                        <div class="bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            Court 2
+                        </div>
+                    </div>
+                    
+                    <div class="match-content bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-3">
+                        <div class="team bg-white rounded-lg p-3 flex items-center justify-between shadow-sm">
+                            <div class="team-players flex items-center gap-2">
+                                <div class="player-number bg-primary-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold">10</div>
+                                <span class="font-semibold">&</span>
+                                <div class="player-number bg-primary-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold">15</div>
+                            </div>
+                            <input type="number" class="score-input w-12 h-10 text-center border-2 border-gray-200 rounded-lg focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all" placeholder="0" min="0">
+                        </div>
+                        <div class="text-center text-gray-400 font-semibold text-sm">VS</div>
+                        <div class="team bg-white rounded-lg p-3 flex items-center justify-between shadow-sm">
+                            <div class="team-players flex items-center gap-2">
+                                <div class="player-number bg-secondary-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                                <span class="font-semibold">&</span>
+                                <div class="player-number bg-secondary-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold">5</div>
+                            </div>
+                            <input type="number" class="score-input w-12 h-10 text-center border-2 border-gray-200 rounded-lg focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all" placeholder="0" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Court 3 -->
+                <div class="court-card bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-6 shadow-gentle border border-emerald-200 hover:shadow-soft transition-all duration-500 hover:-translate-y-1">
+                    <div class="court-header flex items-center justify-center mb-4">
+                        <div class="bg-emerald-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            Court 3
+                        </div>
+                    </div>
+                    
+                    <div class="match-content bg-white/80 backdrop-blur-sm rounded-xl p-4 space-y-3">
+                        <div class="team bg-white rounded-lg p-3 flex items-center justify-between shadow-sm">
+                            <div class="team-players flex items-center gap-2">
+                                <div class="player-number bg-primary-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold">9</div>
+                                <span class="font-semibold">&</span>
+                                <div class="player-number bg-primary-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold">4</div>
+                            </div>
+                            <input type="number" class="score-input w-12 h-10 text-center border-2 border-gray-200 rounded-lg focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all" placeholder="0" min="0">
+                        </div>
+                        <div class="text-center text-gray-400 font-semibold text-sm">VS</div>
+                        <div class="team bg-white rounded-lg p-3 flex items-center justify-between shadow-sm">
+                            <div class="team-players flex items-center gap-2">
+                                <div class="player-number bg-secondary-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold">6</div>
+                                <span class="font-semibold">&</span>
+                                <div class="player-number bg-secondary-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold">7</div>
+                            </div>
+                            <input type="number" class="score-input w-12 h-10 text-center border-2 border-gray-200 rounded-lg focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all" placeholder="0" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Courts 4 & 5 would continue with similar structure -->
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button class="submit-scores-btn bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-soft hover:shadow-warm transition-all duration-300 hover:-translate-y-1 focus:ring-4 focus:ring-primary-200" onclick="submitRoundScores()">
+                    Submit Round Scores with Care
+                </button>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="standings-panel bg-gradient-card rounded-2xl shadow-soft p-6 md:p-8 mb-8">
+            <div class="flex items-center justify-center mb-6">
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold text-gray-800 font-primary mb-2">Player Standings</h2>
+                    <div class="w-16 h-1 bg-gradient-to-r from-primary-400 to-secondary-400 mx-auto rounded-full"></div>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gray-50 border-b-2 border-gray-100">
+                            <th class="text-left py-4 px-4 font-semibold text-gray-700 text-sm">Player</th>
+                            <th class="text-center py-4 px-3 font-semibold text-gray-700 text-sm">Matches</th>
+                            <th class="text-center py-4 px-3 font-semibold text-gray-700 text-sm">Wins</th>
+                            <th class="text-center py-4 px-3 font-semibold text-gray-700 text-sm">Losses</th>
+                            <th class="text-center py-4 px-3 font-semibold text-gray-700 text-sm">Points</th>
+                            <th class="text-center py-4 px-3 font-semibold text-gray-700 text-sm">Diff</th>
+                        </tr>
+                    </thead>
+                    <tbody id="standingsBody">
+                        <!-- Sample row -->
+                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                            <td class="py-4 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="player-number bg-gradient-to-r from-primary-500 to-primary-600 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                                    <span class="font-medium">Player 1</span>
+                                    <span class="text-yellow-500 text-sm" title="Top Performer">⭐</span>
+                                </div>
+                            </td>
+                            <td class="text-center py-4 px-3 text-gray-700">5</td>
+                            <td class="text-center py-4 px-3 font-semibold text-primary-600">4</td>
+                            <td class="text-center py-4 px-3 text-gray-600">1</td>
+                            <td class="text-center py-4 px-3 font-medium">87</td>
+                            <td class="text-center py-4 px-3 font-semibold text-primary-600">+23</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer with FAIR-PLAY Branding -->
+        <footer class="bg-white/60 backdrop-blur-sm rounded-2xl shadow-gentle p-6 md:p-8 text-center">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <!-- Branding -->
+                    <div class="text-center md:text-left">
+                        <div class="font-primary text-xl font-bold text-gray-800 mb-2">
+                            Powered by <span class="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">FAIR-PLAY</span>
+                        </div>
+                        <p class="text-gray-600 text-sm">Tournament management with heart</p>
+                    </div>
+                    
+                    <!-- QR Code Section -->
+                    <div class="text-center">
+                        <div class="bg-white rounded-xl p-4 shadow-gentle border inline-block">
+                            <div class="w-24 h-24 bg-gray-100 rounded-lg mb-3 mx-auto flex items-center justify-center">
+                                <span class="text-gray-400 text-xs">QR Code</span>
+                            </div>
+                            <p class="text-xs text-gray-600 max-w-48 leading-relaxed">
+                                Text Matt if you're interested in piloting our FAIR-PLAY App
+                                <br>
+                                <span class="font-semibold text-primary-600">801-549-8406</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charity Message -->
+                <div class="mt-8 pt-6 border-t border-gray-200">
+                    <p class="text-gray-600 text-sm font-medium mb-2">Supporting Families Affected by Sotos Syndrome</p>
+                    <p class="text-gray-500 text-xs">Every game played brings hope to children and families in our community</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+{
+  "experimental": {
+    "claudeMentions": true,
+    "gitCommands": true
+  },
+  "memory": {
+    "enabled": true,
+    "path": "./CLAUDE.md"
+  },
+  "tools": {
+    "enabled": {
+      "bash": true,
+      "read": true,
+      "write": true,
+      "edit": true,
+      "search": true,
+      "webSearch": true,
+      "webFetch": true
+    }
+  },
+  "output": {
+    "lineNumbers": true,
+    "codeHighlighting": true,
+    "maxLines": 2000
+  },
+  "development": {
+    "lintOnSave": true,
+    "formatOnSave": false,
+    "testOnCommit": false
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "npx -y ccusage statusline",
+    "padding": 0
+  }
+}

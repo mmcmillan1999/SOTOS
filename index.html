@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fair-Play Tournament Manager</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .tournament-info {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .info-badge {
+            background: #f7f9fc;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-badge span {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .info-badge strong {
+            display: block;
+            color: #333;
+            font-size: 1.2em;
+            margin-top: 5px;
+        }
+
+        .control-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .round-selector {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .round-btn {
+            padding: 10px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .round-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .round-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .round-display {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .round-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .round-title {
+            font-size: 1.8em;
+            color: #333;
+        }
+
+        .bye-players {
+            background: #fff3cd;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: #856404;
+        }
+
+        .courts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .court-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 20px;
+            color: white;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .court-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .court-number {
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .match-display {
+            background: rgba(255,255,255,0.95);
+            border-radius: 8px;
+            padding: 15px;
+            color: #333;
+        }
+
+        .team {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: #f7f9fc;
+            border-radius: 6px;
+        }
+
+        .team-players {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .score-input {
+            width: 60px;
+            padding: 5px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        .vs-divider {
+            text-align: center;
+            color: #999;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .standings-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .standings-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .standings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .standings-table th {
+            background: #f7f9fc;
+            padding: 12px;
+            text-align: left;
+            color: #666;
+            font-weight: 600;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .standings-table td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .player-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            color: white;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        .submit-scores-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .submit-scores-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 50px;
+            color: white;
+            font-size: 1.2em;
+        }
+
+        .optimal-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-block;
+            margin-left: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .courts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .round-selector {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Fair-Play Tournament Manager
+                <span class="optimal-badge">97% Optimal Schedule</span>
+            </h1>
+            <div class="tournament-info">
+                <div class="info-badge">
+                    <span>Players</span>
+                    <strong id="totalPlayers">22</strong>
+                </div>
+                <div class="info-badge">
+                    <span>Rounds</span>
+                    <strong id="totalRounds">10</strong>
+                </div>
+                <div class="info-badge">
+                    <span>Courts</span>
+                    <strong id="courtsPerRound">5</strong>
+                </div>
+                <div class="info-badge">
+                    <span>Format</span>
+                    <strong>Singles RR by Teams</strong>
+                </div>
+                <div class="info-badge">
+                    <span>Violations</span>
+                    <strong>7 (Minimum)</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="round-selector" id="roundSelector">
+                <!-- Round buttons will be generated here -->
+            </div>
+        </div>
+
+        <div class="loading" id="loading">
+            Loading tournament data...
+        </div>
+
+        <div class="round-display" id="roundDisplay" style="display: none;">
+            <div class="round-header">
+                <h2 class="round-title" id="roundTitle">Round 1</h2>
+                <div class="bye-players" id="byePlayers">
+                    Sitting Out: <strong>Players 19, 21</strong>
+                </div>
+            </div>
+            <div class="courts-grid" id="courtsGrid">
+                <!-- Courts will be generated here -->
+            </div>
+            <div style="text-align: center;">
+                <button class="submit-scores-btn" onclick="submitRoundScores()">
+                    Submit Round Scores
+                </button>
+            </div>
+        </div>
+
+        <div class="standings-panel">
+            <h2 class="standings-title">Player Standings</h2>
+            <table class="standings-table">
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Matches</th>
+                        <th>Wins</th>
+                        <th>Losses</th>
+                        <th>Points</th>
+                        <th>Diff</th>
+                    </tr>
+                </thead>
+                <tbody id="standingsBody">
+                    <!-- Standings will be generated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
