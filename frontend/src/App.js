@@ -243,6 +243,7 @@ function App() {
               isAdmin={isAdmin}
               onUpdatePlayerName={handleUpdatePlayerName}
               currentEnv={currentEnv}
+              tournamentData={tournamentData}
             />
           </div>
         </div>

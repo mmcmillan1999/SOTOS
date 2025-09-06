@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import PlayerDetails from './PlayerDetails';
 
-function Leaderboard({ players, isAdmin, onUpdatePlayerName, currentEnv }) {
+function Leaderboard({ players, isAdmin, onUpdatePlayerName, currentEnv, tournamentData }) {
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [editName, setEditName] = useState('');
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
 
   const handleStartEdit = (player) => {
     if (!isAdmin) return;
@@ -84,15 +86,25 @@ function Leaderboard({ players, isAdmin, onUpdatePlayerName, currentEnv }) {
                       </button>
                     </div>
                   ) : (
-                    <span 
-                      className={`font-semibold text-purple-900 ${
-                        isAdmin ? 'cursor-pointer hover:text-purple-600' : ''
-                      }`}
-                      onClick={() => handleStartEdit(player)}
-                      title={isAdmin ? 'Click to edit' : ''}
-                    >
-                      {player.name}
-                    </span>
+                    <div className="flex items-center gap-1">
+                      <span 
+                        className={`font-semibold text-purple-900 ${
+                          isAdmin ? 'cursor-pointer hover:text-purple-600' : 'cursor-pointer hover:text-purple-600'
+                        }`}
+                        onClick={() => isAdmin ? handleStartEdit(player) : setSelectedPlayer(player)}
+                        title={isAdmin ? 'Click to edit' : 'Click for details'}
+                      >
+                        {player.name}
+                      </span>
+                      {!isAdmin && (
+                        <span 
+                          className="text-purple-400 text-xs italic cursor-pointer hover:text-purple-600"
+                          onClick={() => setSelectedPlayer(player)}
+                        >
+                          ⓘ
+                        </span>
+                      )}
+                    </div>
                   )}
                 </td>
                 <td className="px-1 py-1 text-center text-xs">
@@ -130,6 +142,15 @@ function Leaderboard({ players, isAdmin, onUpdatePlayerName, currentEnv }) {
         <div className="mt-1 p-1 bg-yellow-50 text-xs text-purple-700 text-center">
           <span className="font-bold">*</span> Points adjusted 0.9x (iron players - no byes)
         </div>
+      )}
+      
+      {/* Player Details Modal */}
+      {selectedPlayer && (
+        <PlayerDetails 
+          player={selectedPlayer}
+          onClose={() => setSelectedPlayer(null)}
+          tournamentData={tournamentData}
+        />
       )}
     </div>
   );
