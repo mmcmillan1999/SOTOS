@@ -166,6 +166,9 @@ function App() {
         tournamentName={tournamentData?.tournamentName}
         currentEnv={currentEnv}
         onEnvChange={handleEnvChange}
+        currentRound={tournamentData?.currentRound}
+        viewingRound={viewingRound}
+        setViewingRound={setViewingRound}
       />
 
       {/* Main Content Area - Two Column Layout */}

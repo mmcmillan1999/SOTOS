@@ -25,21 +25,6 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
   const displayRoundData = viewingRound 
     ? allRounds[viewingRound - 1] 
     : roundData;
-  
-  // Navigation functions
-  const canGoBack = displayRound > 1;
-  const canGoForward = displayRound < 10;
-  
-  const navigateRound = (direction) => {
-    const newRound = displayRound + direction;
-    if (newRound >= 1 && newRound <= 10) {
-      if (newRound === currentRound) {
-        setViewingRound(null); // Back to current
-      } else {
-        setViewingRound(newRound);
-      }
-    }
-  };
 
   const handleScoreChange = (courtIndex, team, value) => {
     setScores(prev => ({
@@ -75,44 +60,6 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
 
   return (
     <div className="mb-4">
-      {/* Round Navigation Header */}
-      <div className="bg-purple-100 rounded-lg p-3 mb-4 flex items-center justify-between">
-        <button
-          onClick={() => navigateRound(-1)}
-          disabled={!canGoBack}
-          className={`p-2 rounded-lg transition-colors ${
-            canGoBack 
-              ? 'bg-purple-600 text-white hover:bg-purple-700' 
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
-        >
-          ←
-        </button>
-        
-        <div className="text-center">
-          <h2 className="text-xl font-nunito font-bold text-purple-800">
-            Round {displayRound}
-          </h2>
-          {viewingRound && viewingRound !== currentRound && (
-            <p className="text-xs text-purple-600">
-              (Viewing history - Current: Round {currentRound})
-            </p>
-          )}
-        </div>
-        
-        <button
-          onClick={() => navigateRound(1)}
-          disabled={!canGoForward}
-          className={`p-2 rounded-lg transition-colors ${
-            canGoForward 
-              ? 'bg-purple-600 text-white hover:bg-purple-700' 
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
-        >
-          →
-        </button>
-      </div>
-      
       {/* Current Round Courts - 3x2 Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {displayRoundData?.courts?.map((court, index) => {
@@ -159,11 +106,6 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                       {getPlayerName(p2)}
                     </div>
                   </div>
-                </div>
-                
-                {/* VS */}
-                <div className="text-center py-1">
-                  <span className="text-purple-600 font-bold text-xs">VS</span>
                 </div>
                 
                 {/* Team 2 */}
