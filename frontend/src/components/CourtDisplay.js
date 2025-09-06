@@ -213,7 +213,7 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                 {/* Winner Indicator */}
                 {hasScore && editingScore !== matchKey && (
                   <div className="text-center mt-2">
-                    <span className="text-sm font-bold text-green-600"
+                    <span className="text-sm font-bold text-green-600">
                       {savedScore.team1Score > savedScore.team2Score ? 'Team 1 Wins!' : 'Team 2 Wins!'}
                     </span>
                   </div>
