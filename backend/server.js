@@ -73,7 +73,7 @@ const playerNames = [
 // Multiple tournament environments
 const tournaments = {
   PROD: {
-    name: "SOTO'S SYNDROME FUNDRAISER - LIVE EVENT",
+    name: "SOTOS SYNDROME FUNDRAISER - LIVE EVENT",
     currentRound: 1,
     players: playerNames.map((name, index) => ({
       id: index + 1,
@@ -88,7 +88,7 @@ const tournaments = {
     completedRounds: []
   },
   SIT: {
-    name: "SOTO'S FUNDRAISER - SIT TESTING",
+    name: "SOTOS FUNDRAISER - SIT TESTING",
     currentRound: 1,
     players: playerNames.map((name, index) => ({
       id: index + 1,
@@ -103,7 +103,7 @@ const tournaments = {
     completedRounds: []
   },
   UAT: {
-    name: "SOTO'S FUNDRAISER - UAT REHEARSAL",
+    name: "SOTOS FUNDRAISER - UAT REHEARSAL",
     currentRound: 1,
     players: playerNames.map((name, index) => ({
       id: index + 1,
@@ -316,6 +316,23 @@ app.get('/api/leaderboard/:env?', (req, res) => {
   });
   
   res.json(sortedPlayers);
+});
+
+// Update player name (admin only)
+app.post('/api/player/:env/:playerId', (req, res) => {
+  const env = req.params.env || 'PROD';
+  const playerId = parseInt(req.params.playerId);
+  const { name } = req.body;
+  
+  const player = tournaments[env].players.find(p => p.id === playerId);
+  if (player) {
+    player.name = name;
+    // Emit update to all clients in the same environment
+    io.emit(`tournamentUpdate:${env}`, tournaments[env]);
+    res.json({ success: true, player });
+  } else {
+    res.status(404).json({ success: false, message: 'Player not found' });
+  }
 });
 
 // Socket.io connections

@@ -1,88 +1,126 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-function Leaderboard({ players }) {
+function Leaderboard({ players, isAdmin, onUpdatePlayerName, currentEnv }) {
+  const [editingPlayer, setEditingPlayer] = useState(null);
+  const [editName, setEditName] = useState('');
+
+  const handleStartEdit = (player) => {
+    if (!isAdmin) return;
+    setEditingPlayer(player.id);
+    setEditName(player.name);
+  };
+
+  const handleSaveEdit = (playerId) => {
+    if (onUpdatePlayerName) {
+      onUpdatePlayerName(playerId, editName);
+    }
+    setEditingPlayer(null);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingPlayer(null);
+    setEditName('');
+  };
+
   return (
-    <div className="mt-8 bg-white rounded-xl shadow-xl border-2 border-purple-200 overflow-hidden">
-      <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white p-4">
-        <h2 className="text-2xl font-nunito font-bold text-center">
-          🏆 Leaderboard 🏆
-        </h2>
-      </div>
-      
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-purple-50">
-            <tr>
-              <th className="px-4 py-3 text-left font-nunito font-bold text-purple-900">Rank</th>
-              <th className="px-4 py-3 text-left font-nunito font-bold text-purple-900">Player</th>
-              <th className="px-4 py-3 text-center font-nunito font-bold text-purple-900">W</th>
-              <th className="px-4 py-3 text-center font-nunito font-bold text-purple-900">L</th>
-              <th className="px-4 py-3 text-center font-nunito font-bold text-purple-900">PF</th>
-              <th className="px-4 py-3 text-center font-nunito font-bold text-purple-900">PA</th>
-              <th className="px-4 py-3 text-center font-nunito font-bold text-purple-900">+/-</th>
-            </tr>
-          </thead>
-          <tbody>
-            {players.map((player, index) => {
-              const differential = player.pointsFor - player.pointsAgainst;
-              const isTop3 = index < 3;
-              
-              return (
-                <tr 
-                  key={player.id} 
-                  className={`
-                    border-b hover:bg-purple-50 transition-colors
-                    ${isTop3 ? 'bg-yellow-50' : ''}
-                  `}
-                >
-                  <td className="px-4 py-3">
-                    <span className={`
-                      font-bold 
-                      ${index === 0 ? 'text-2xl' : ''}
-                      ${index === 1 ? 'text-xl' : ''}
-                      ${index === 2 ? 'text-lg' : ''}
-                    `}>
-                      {index === 0 && '🥇'}
-                      {index === 1 && '🥈'}
-                      {index === 2 && '🥉'}
-                      {index > 2 && (index + 1)}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="font-inter font-semibold text-purple-900">
+    <div>
+      <table className="w-full text-xs">
+        <thead className="bg-purple-50 sticky top-0">
+          <tr>
+            <th className="px-2 py-2 text-left font-bold text-purple-900">#</th>
+            <th className="px-2 py-2 text-left font-bold text-purple-900">Player</th>
+            <th className="px-2 py-2 text-center font-bold text-purple-900">W-L</th>
+            <th className="px-2 py-2 text-center font-bold text-purple-900">+/-</th>
+          </tr>
+        </thead>
+        <tbody>
+          {players.map((player, index) => {
+            const differential = player.pointsFor - player.pointsAgainst;
+            const isTop3 = index < 3;
+            
+            return (
+              <tr 
+                key={player.id} 
+                className={`
+                  border-b hover:bg-purple-50 transition-colors
+                  ${isTop3 ? 'bg-yellow-50' : ''}
+                `}
+              >
+                <td className="px-2 py-2">
+                  <span className="font-bold">
+                    {index === 0 && '🥇'}
+                    {index === 1 && '🥈'}
+                    {index === 2 && '🥉'}
+                    {index > 2 && (index + 1)}
+                  </span>
+                </td>
+                <td className="px-2 py-2">
+                  {editingPlayer === player.id ? (
+                    <div className="flex gap-1">
+                      <input
+                        type="text"
+                        value={editName}
+                        onChange={(e) => setEditName(e.target.value)}
+                        className="px-1 py-0 border border-purple-300 rounded text-xs w-20"
+                        autoFocus
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter') handleSaveEdit(player.id);
+                          if (e.key === 'Escape') handleCancelEdit();
+                        }}
+                      />
+                      <button
+                        onClick={() => handleSaveEdit(player.id)}
+                        className="text-green-600 hover:text-green-800 font-bold"
+                      >
+                        ✓
+                      </button>
+                      <button
+                        onClick={handleCancelEdit}
+                        className="text-red-600 hover:text-red-800 font-bold"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ) : (
+                    <span 
+                      className={`font-semibold text-purple-900 ${
+                        isAdmin ? 'cursor-pointer hover:text-purple-600' : ''
+                      }`}
+                      onClick={() => handleStartEdit(player)}
+                      title={isAdmin ? 'Click to edit' : ''}
+                    >
                       {player.name}
+                      {(player.id === 7 || player.id === 14) && (
+                        <span className="ml-1 text-purple-600" title="Iron Player">⚡</span>
+                      )}
                     </span>
-                    {player.id === 7 || player.id === 14 ? (
-                      <span className="ml-2 text-purple-600" title="Iron Player - No Byes">⚡</span>
-                    ) : null}
-                  </td>
-                  <td className="px-4 py-3 text-center font-bold text-green-600">
-                    {player.wins}
-                  </td>
-                  <td className="px-4 py-3 text-center font-bold text-red-600">
-                    {player.losses}
-                  </td>
-                  <td className="px-4 py-3 text-center font-semibold">
-                    {player.pointsFor}
-                  </td>
-                  <td className="px-4 py-3 text-center font-semibold">
-                    {player.pointsAgainst}
-                  </td>
-                  <td className={`px-4 py-3 text-center font-bold ${
-                    differential > 0 ? 'text-green-600' : differential < 0 ? 'text-red-600' : 'text-gray-600'
-                  }`}>
-                    {differential > 0 ? '+' : ''}{differential}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                  )}
+                </td>
+                <td className="px-2 py-2 text-center">
+                  <span className="text-green-600 font-bold">{player.wins}</span>
+                  -
+                  <span className="text-red-600 font-bold">{player.losses}</span>
+                </td>
+                <td className={`px-2 py-2 text-center font-bold ${
+                  differential > 0 ? 'text-green-600' : differential < 0 ? 'text-red-600' : 'text-gray-600'
+                }`}>
+                  {differential > 0 ? '+' : ''}{differential}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
       
       {players.length === 0 && (
-        <div className="p-8 text-center text-gray-500">
-          <p className="font-inter">No games played yet</p>
+        <div className="p-4 text-center text-gray-500">
+          <p className="text-xs">No games played yet</p>
+        </div>
+      )}
+      
+      {isAdmin && (
+        <div className="mt-2 p-2 bg-purple-50 rounded text-xs text-purple-700">
+          🖊️ Click any name to edit
         </div>
       )}
     </div>
