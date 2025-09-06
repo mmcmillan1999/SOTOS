@@ -81,7 +81,21 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                 {/* Team 1 */}
                 <div className="bg-purple-50 rounded-lg p-2 mb-2 border border-purple-200">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-semibold text-purple-700">Team 1</p>
+                    <div className="flex items-center gap-1">
+                      <p className="text-xs font-semibold text-purple-700">Team 1</p>
+                      {/* Serve indicator */}
+                      <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" className="text-purple-600" title="Serves first">
+                        {/* ball */}
+                        <circle cx="7.5" cy="8" r="2.2" fill="currentColor"/>
+                        {/* curved arrow */}
+                        <path d="M2.2 9.6c.9 2.8 4.2 4.3 7 3.3a6 6 0 0 0 3.6-3.2"
+                              fill="none" stroke="currentColor" strokeWidth="1.6"
+                              strokeLinecap="round"/>
+                        <path d="M12.9 7.5l1.6.9l-1 1.6" fill="none"
+                              stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"
+                              strokeLinejoin="round"/>
+                      </svg>
+                    </div>
                     {hasScore ? (
                       <span className="text-lg font-bold text-purple-900">{savedScore.team1Score}</span>
                     ) : (
