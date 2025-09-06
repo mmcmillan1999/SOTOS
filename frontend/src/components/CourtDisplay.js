@@ -118,6 +118,9 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
         {displayRoundData?.courts?.map((court, index) => {
           const [p1, p2, p3, p4] = court;
           const isCurrentRound = displayRound === currentRound;
+          const matchKey = `${displayRound}-${index}`;
+          const savedScore = tournamentData?.matchScores?.[matchKey];
+          const hasScore = savedScore && (savedScore.team1Score !== undefined || savedScore.team2Score !== undefined);
           
           return (
             <div key={index} className="bg-white rounded-lg border-2 border-purple-200 shadow-md overflow-hidden">
@@ -130,8 +133,25 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
               <div className="p-3">
                 {/* Team 1 */}
                 <div className="bg-purple-50 rounded-lg p-2 mb-2 border border-purple-200">
-                  <p className="text-xs font-semibold text-center text-purple-700 mb-1">Team 1</p>
-                  <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-semibold text-purple-700">Team 1</p>
+                    {hasScore ? (
+                      <span className="text-lg font-bold text-purple-900">{savedScore.team1Score}</span>
+                    ) : (
+                      isAdmin && isCurrentRound && (
+                        <input
+                          type="number"
+                          placeholder="Score"
+                          min="0"
+                          max="13"
+                          value={scores[`court${index}_team1`] || ''}
+                          onChange={(e) => handleScoreChange(index, 1, e.target.value)}
+                          className="w-16 px-1 py-0.5 border border-purple-300 rounded text-center text-sm"
+                        />
+                      )
+                    )}
+                  </div>
+                  <div className="space-y-1 mt-1">
                     <div className="bg-white px-2 py-1 rounded text-xs font-semibold text-purple-900 text-center">
                       {getPlayerName(p1)}
                     </div>
@@ -148,8 +168,25 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                 
                 {/* Team 2 */}
                 <div className="bg-yellow-50 rounded-lg p-2 mb-2 border border-yellow-300">
-                  <p className="text-xs font-semibold text-center text-yellow-700 mb-1">Team 2</p>
-                  <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-semibold text-yellow-700">Team 2</p>
+                    {hasScore ? (
+                      <span className="text-lg font-bold text-purple-900">{savedScore.team2Score}</span>
+                    ) : (
+                      isAdmin && isCurrentRound && (
+                        <input
+                          type="number"
+                          placeholder="Score"
+                          min="0"
+                          max="13"
+                          value={scores[`court${index}_team2`] || ''}
+                          onChange={(e) => handleScoreChange(index, 2, e.target.value)}
+                          className="w-16 px-1 py-0.5 border border-yellow-300 rounded text-center text-sm"
+                        />
+                      )
+                    )}
+                  </div>
+                  <div className="space-y-1 mt-1">
                     <div className="bg-white px-2 py-1 rounded text-xs font-semibold text-purple-900 text-center">
                       {getPlayerName(p3)}
                     </div>
@@ -159,35 +196,22 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                   </div>
                 </div>
                 
-                {/* Score Input (Admin Only, Current Round Only) */}
-                {isAdmin && isCurrentRound && (
-                  <div className="space-y-2">
-                    <div className="flex gap-2">
-                      <input
-                        type="number"
-                        placeholder="T1"
-                        min="0"
-                        max="13"
-                        value={scores[`court${index}_team1`] || ''}
-                        onChange={(e) => handleScoreChange(index, 1, e.target.value)}
-                        className="w-1/2 px-2 py-1 border border-purple-300 rounded text-center text-sm"
-                      />
-                      <input
-                        type="number"
-                        placeholder="T2"
-                        min="0"
-                        max="13"
-                        value={scores[`court${index}_team2`] || ''}
-                        onChange={(e) => handleScoreChange(index, 2, e.target.value)}
-                        className="w-1/2 px-2 py-1 border border-yellow-300 rounded text-center text-sm"
-                      />
-                    </div>
-                    <button
-                      onClick={() => submitScore(index)}
-                      className="w-full bg-purple-600 text-white py-1 rounded hover:bg-purple-700 transition-colors text-xs font-semibold"
-                    >
-                      Submit
-                    </button>
+                {/* Submit Button (Admin Only, Current Round Only, No Score Yet) */}
+                {isAdmin && isCurrentRound && !hasScore && (
+                  <button
+                    onClick={() => submitScore(index)}
+                    className="w-full bg-purple-600 text-white py-1 rounded hover:bg-purple-700 transition-colors text-xs font-semibold"
+                  >
+                    Submit Score
+                  </button>
+                )}
+                
+                {/* Winner Indicator */}
+                {hasScore && (
+                  <div className="text-center mt-2">
+                    <span className="text-xs font-semibold text-green-600">
+                      {savedScore.team1Score > savedScore.team2Score ? 'Team 1 Wins!' : 'Team 2 Wins!'}
+                    </span>
                   </div>
                 )}
               </div>

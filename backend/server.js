@@ -202,6 +202,16 @@ app.get('/api/tournament/:env?', (req, res) => {
   const currentRound = currentRounds[env];
   const currentRoundData = tournamentSchedule.schedule[currentRound - 1];
   
+  // Get scores for all matches
+  const matchScores = {};
+  tournamentState.matches.forEach(match => {
+    const key = `${match.round}-${match.court}`;
+    matchScores[key] = {
+      team1Score: match.team1Score,
+      team2Score: match.team2Score
+    };
+  });
+  
   res.json({
     ...tournamentState,
     currentRound,
@@ -209,7 +219,8 @@ app.get('/api/tournament/:env?', (req, res) => {
     totalRounds: tournamentSchedule.metadata.rounds,
     tournamentName: tournamentState.name,
     environment: env,
-    schedule: tournamentSchedule.schedule // Include full schedule for navigation
+    schedule: tournamentSchedule.schedule, // Include full schedule for navigation
+    matchScores // Include all match scores
   });
 });
 
