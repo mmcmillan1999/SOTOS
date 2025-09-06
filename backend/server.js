@@ -70,21 +70,60 @@ const playerNames = [
   "Player 21", "Player 22"
 ];
 
-// In-memory state
-let currentRound = 1;
-let tournamentState = {
-  currentRound: 1,
-  players: playerNames.map((name, index) => ({
-    id: index + 1,
-    name: name,
-    wins: 0,
-    losses: 0,
-    pointsFor: 0,
-    pointsAgainst: 0,
-    gamesPlayed: 0
-  })),
-  matches: [],
-  completedRounds: []
+// Multiple tournament environments
+const tournaments = {
+  PROD: {
+    name: "SOTO'S SYNDROME FUNDRAISER - LIVE EVENT",
+    currentRound: 1,
+    players: playerNames.map((name, index) => ({
+      id: index + 1,
+      name: name,
+      wins: 0,
+      losses: 0,
+      pointsFor: 0,
+      pointsAgainst: 0,
+      gamesPlayed: 0
+    })),
+    matches: [],
+    completedRounds: []
+  },
+  SIT: {
+    name: "SOTO'S FUNDRAISER - SIT TESTING",
+    currentRound: 1,
+    players: playerNames.map((name, index) => ({
+      id: index + 1,
+      name: `Test Player ${index + 1}`,
+      wins: Math.floor(Math.random() * 5),
+      losses: Math.floor(Math.random() * 5),
+      pointsFor: Math.floor(Math.random() * 100),
+      pointsAgainst: Math.floor(Math.random() * 100),
+      gamesPlayed: Math.floor(Math.random() * 10)
+    })),
+    matches: [],
+    completedRounds: []
+  },
+  UAT: {
+    name: "SOTO'S FUNDRAISER - UAT REHEARSAL",
+    currentRound: 1,
+    players: playerNames.map((name, index) => ({
+      id: index + 1,
+      name: `UAT Player ${index + 1}`,
+      wins: 0,
+      losses: 0,
+      pointsFor: 0,
+      pointsAgainst: 0,
+      gamesPlayed: 0
+    })),
+    matches: [],
+    completedRounds: []
+  }
+};
+
+// Track current round per tournament
+const currentRounds = {
+  PROD: 1,
+  SIT: 1,
+  UAT: 1
 };
 
 // Simple auth (hardcoded for MVP)
@@ -148,14 +187,28 @@ async function initDB() {
 
 // API Routes
 
+// Get available tournaments
+app.get('/api/tournaments', (req, res) => {
+  res.json({
+    environments: ['PROD', 'SIT', 'UAT'],
+    current: 'PROD'
+  });
+});
+
 // Get tournament state
-app.get('/api/tournament', (req, res) => {
+app.get('/api/tournament/:env?', (req, res) => {
+  const env = req.params.env || 'PROD';
+  const tournamentState = tournaments[env];
+  const currentRound = currentRounds[env];
   const currentRoundData = tournamentSchedule.schedule[currentRound - 1];
+  
   res.json({
     ...tournamentState,
+    currentRound,
     currentRoundData,
     totalRounds: tournamentSchedule.metadata.rounds,
-    tournamentName: "SOTO'S SYNDROME FUNDRAISER"
+    tournamentName: tournamentState.name,
+    environment: env
   });
 });
 
@@ -170,8 +223,10 @@ app.post('/api/admin/login', (req, res) => {
 });
 
 // Submit scores (admin only)
-app.post('/api/scores', async (req, res) => {
+app.post('/api/scores/:env?', async (req, res) => {
   const { round, court, team1Score, team2Score } = req.body;
+  const env = req.params.env || 'PROD';
+  const tournamentState = tournaments[env];
   
   try {
     const roundData = tournamentSchedule.schedule[round - 1];
@@ -211,14 +266,16 @@ app.post('/api/scores', async (req, res) => {
       timestamp: new Date()
     });
     
-    // Save to database
-    await pool.query(`
-      INSERT INTO fairplay.matches (tournament_id, round, court, team1_players, team2_players, team1_score, team2_score, completed)
-      VALUES (1, $1, $2, $3, $4, $5, $6, true)
-    `, [round, court, [p1, p2], [p3, p4], team1Score, team2Score]);
+    // Save to database (only for PROD)
+    if (env === 'PROD') {
+      await pool.query(`
+        INSERT INTO fairplay.matches (tournament_id, round, court, team1_players, team2_players, team1_score, team2_score, completed)
+        VALUES (1, $1, $2, $3, $4, $5, $6, true)
+      `, [round, court, [p1, p2], [p3, p4], team1Score, team2Score]);
+    }
     
-    // Emit update to all clients
-    io.emit('tournamentUpdate', tournamentState);
+    // Emit update to all clients in the same environment
+    io.emit(`tournamentUpdate:${env}`, tournamentState);
     
     res.json({ success: true, tournamentState });
   } catch (error) {
@@ -228,22 +285,30 @@ app.post('/api/scores', async (req, res) => {
 });
 
 // Advance round
-app.post('/api/advance-round', (req, res) => {
-  if (currentRound < tournamentSchedule.metadata.rounds) {
-    currentRound++;
-    tournamentState.currentRound = currentRound;
+app.post('/api/advance-round/:env?', (req, res) => {
+  const env = req.params.env || 'PROD';
+  
+  if (currentRounds[env] < tournamentSchedule.metadata.rounds) {
+    currentRounds[env]++;
+    tournaments[env].currentRound = currentRounds[env];
     
-    // Emit update to all clients
-    io.emit('roundAdvanced', { currentRound, tournamentState });
+    // Emit update to all clients in the same environment
+    io.emit(`roundAdvanced:${env}`, { 
+      currentRound: currentRounds[env], 
+      tournamentState: tournaments[env] 
+    });
     
-    res.json({ success: true, currentRound });
+    res.json({ success: true, currentRound: currentRounds[env] });
   } else {
     res.json({ success: false, message: 'Tournament complete' });
   }
 });
 
 // Get leaderboard
-app.get('/api/leaderboard', (req, res) => {
+app.get('/api/leaderboard/:env?', (req, res) => {
+  const env = req.params.env || 'PROD';
+  const tournamentState = tournaments[env];
+  
   const sortedPlayers = [...tournamentState.players].sort((a, b) => {
     // Sort by wins, then by point differential
     if (b.wins !== a.wins) return b.wins - a.wins;
@@ -257,8 +322,15 @@ app.get('/api/leaderboard', (req, res) => {
 io.on('connection', (socket) => {
   console.log('Client connected:', socket.id);
   
-  // Send current state to new client
-  socket.emit('tournamentUpdate', tournamentState);
+  // Join environment room
+  socket.on('join-tournament', (env) => {
+    const environment = env || 'PROD';
+    socket.join(environment);
+    console.log(`Client ${socket.id} joined ${environment} tournament`);
+    
+    // Send current state to new client
+    socket.emit(`tournamentUpdate:${environment}`, tournaments[environment]);
+  });
   
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id);
