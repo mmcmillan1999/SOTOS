@@ -308,11 +308,40 @@ app.post('/api/advance-round/:env?', (req, res) => {
 app.get('/api/leaderboard/:env?', (req, res) => {
   const env = req.params.env || 'PROD';
   const tournamentState = tournaments[env];
+  const ironPlayers = [7, 14]; // Players who never get byes
   
-  const sortedPlayers = [...tournamentState.players].sort((a, b) => {
-    // Sort by wins, then by point differential
-    if (b.wins !== a.wins) return b.wins - a.wins;
-    return (b.pointsFor - b.pointsAgainst) - (a.pointsFor - a.pointsAgainst);
+  // Apply factoring for iron players and sort
+  const processedPlayers = tournamentState.players.map(player => {
+    if (ironPlayers.includes(player.id)) {
+      // Factor scores by 0.9 for iron players
+      return {
+        ...player,
+        displayWins: Math.round(player.wins * 0.9 * 10) / 10, // Round to 1 decimal
+        displayLosses: Math.round(player.losses * 0.9 * 10) / 10,
+        displayPointsFor: Math.round(player.pointsFor * 0.9),
+        displayPointsAgainst: Math.round(player.pointsAgainst * 0.9),
+        isFactored: true,
+        actualWins: player.wins,
+        actualLosses: player.losses,
+        actualPointsFor: player.pointsFor,
+        actualPointsAgainst: player.pointsAgainst
+      };
+    } else {
+      return {
+        ...player,
+        displayWins: player.wins,
+        displayLosses: player.losses,
+        displayPointsFor: player.pointsFor,
+        displayPointsAgainst: player.pointsAgainst,
+        isFactored: false
+      };
+    }
+  });
+  
+  const sortedPlayers = processedPlayers.sort((a, b) => {
+    // Sort by factored wins, then by factored point differential
+    if (b.displayWins !== a.displayWins) return b.displayWins - a.displayWins;
+    return (b.displayPointsFor - b.displayPointsAgainst) - (a.displayPointsFor - a.displayPointsAgainst);
   });
   
   res.json(sortedPlayers);
