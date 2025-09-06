@@ -138,14 +138,19 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                   </div>
                 </div>
                 
-                {/* Submit Button (Admin Only, Current Round Only, No Score Yet) */}
-                {isAdmin && isCurrentRound && !hasScore && (
-                  <button
-                    onClick={() => submitScore(index)}
-                    className="w-full bg-purple-600 text-white py-1 rounded hover:bg-purple-700 transition-colors text-xs font-semibold"
-                  >
-                    Submit Score
-                  </button>
+                {/* Submit Icon (Admin Only, Current Round Only, No Score Yet, Both scores entered) */}
+                {isAdmin && isCurrentRound && !hasScore && 
+                 scores[`court${index}_team1`] && scores[`court${index}_team2`] && (
+                  <div className="text-center mt-1">
+                    <button
+                      onClick={() => submitScore(index)}
+                      className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors text-xs"
+                      title="Submit scores"
+                    >
+                      <span>✓</span>
+                      <span className="text-xs">Submit</span>
+                    </button>
+                  </div>
                 )}
                 
                 {/* Winner Indicator */}
