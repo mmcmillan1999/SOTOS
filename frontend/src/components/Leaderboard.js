@@ -27,10 +27,10 @@ function Leaderboard({ players, isAdmin, onUpdatePlayerName, currentEnv }) {
       <table className="w-full text-xs">
         <thead className="bg-purple-50 sticky top-0">
           <tr>
-            <th className="px-2 py-2 text-left font-bold text-purple-900">#</th>
-            <th className="px-2 py-2 text-left font-bold text-purple-900">Player</th>
-            <th className="px-2 py-2 text-center font-bold text-purple-900">W-L</th>
-            <th className="px-2 py-2 text-center font-bold text-purple-900">+/-</th>
+            <th className="px-1 py-1 text-left font-bold text-purple-900">#</th>
+            <th className="px-1 py-1 text-left font-bold text-purple-900">Player</th>
+            <th className="px-1 py-1 text-center font-bold text-purple-900">W-L</th>
+            <th className="px-1 py-1 text-center font-bold text-purple-900">+/-</th>
           </tr>
         </thead>
         <tbody>
@@ -47,7 +47,7 @@ function Leaderboard({ players, isAdmin, onUpdatePlayerName, currentEnv }) {
                   ${isTop3 ? 'bg-yellow-50' : ''}
                 `}
               >
-                <td className="px-2 py-2">
+                <td className="px-1 py-1">
                   <span className="font-bold">
                     {index === 0 && '🥇'}
                     {index === 1 && '🥈'}
@@ -55,7 +55,7 @@ function Leaderboard({ players, isAdmin, onUpdatePlayerName, currentEnv }) {
                     {index > 2 && (index + 1)}
                   </span>
                 </td>
-                <td className="px-2 py-2">
+                <td className="px-1 py-1">
                   {editingPlayer === player.id ? (
                     <div className="flex gap-1">
                       <input
@@ -97,7 +97,7 @@ function Leaderboard({ players, isAdmin, onUpdatePlayerName, currentEnv }) {
                     </span>
                   )}
                 </td>
-                <td className="px-2 py-2 text-center">
+                <td className="px-1 py-1 text-center">
                   <span className="text-green-600 font-bold">
                     {player.displayWins}{hasAsterisk && '*'}
                   </span>
@@ -106,7 +106,7 @@ function Leaderboard({ players, isAdmin, onUpdatePlayerName, currentEnv }) {
                     {player.displayLosses}
                   </span>
                 </td>
-                <td className={`px-2 py-2 text-center font-bold ${
+                <td className={`px-1 py-1 text-center font-bold ${
                   differential > 0 ? 'text-green-600' : differential < 0 ? 'text-red-600' : 'text-gray-600'
                 }`}>
                   {differential > 0 ? '+' : ''}{differential}{hasAsterisk && '*'}
@@ -123,16 +123,10 @@ function Leaderboard({ players, isAdmin, onUpdatePlayerName, currentEnv }) {
         </div>
       )}
       
-      {isAdmin && (
-        <div className="mt-2 p-2 bg-purple-50 rounded text-xs text-purple-700">
-          🖊️ Click any name to edit
-        </div>
-      )}
-      
-      {/* Sticky footer for asterisk explanation */}
+      {/* Compact footer for asterisk explanation */}
       {players.some(p => p.isFactored) && (
-        <div className="sticky bottom-0 mt-2 p-2 bg-yellow-100 border-t border-yellow-300 text-xs text-purple-900">
-          <span className="font-bold">*</span> Scores factored by 0.9 to account for extra games (no byes)
+        <div className="mt-1 p-1 bg-yellow-50 text-xs text-purple-700 text-center">
+          <span className="font-bold">*</span> Factored 0.9x (no byes)
         </div>
       )}
     </div>

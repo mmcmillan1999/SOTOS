@@ -1,6 +1,6 @@
 import React from 'react';
 
-function TournamentHeader({ tournamentName, currentEnv, onEnvChange, currentRound, viewingRound, setViewingRound }) {
+function TournamentHeader({ tournamentName, currentRound, viewingRound, setViewingRound }) {
   const displayRound = viewingRound || currentRound;
   const canGoBack = displayRound > 1;
   const canGoForward = displayRound < 10;
@@ -91,38 +91,9 @@ function TournamentHeader({ tournamentName, currentEnv, onEnvChange, currentRoun
             </svg>
           </div>
           
-          {/* Environment Selector - Right */}
-          <div className="flex gap-1">
-            <button
-              onClick={() => onEnvChange('PROD')}
-              className={`px-2 py-1 rounded text-xs font-bold transition-colors ${
-                currentEnv === 'PROD' 
-                  ? 'bg-white text-purple-700' 
-                  : 'bg-purple-500 text-white hover:bg-purple-400'
-              }`}
-            >
-              LIVE
-            </button>
-            <button
-              onClick={() => onEnvChange('SIT')}
-              className={`px-2 py-1 rounded text-xs font-bold transition-colors ${
-                currentEnv === 'SIT' 
-                  ? 'bg-yellow-300 text-purple-900' 
-                  : 'bg-purple-500 text-white hover:bg-purple-400'
-              }`}
-            >
-              SIT
-            </button>
-            <button
-              onClick={() => onEnvChange('UAT')}
-              className={`px-2 py-1 rounded text-xs font-bold transition-colors ${
-                currentEnv === 'UAT' 
-                  ? 'bg-green-300 text-purple-900' 
-                  : 'bg-purple-500 text-white hover:bg-purple-400'
-              }`}
-            >
-              UAT
-            </button>
+          {/* Leaderboard Header - Right */}
+          <div className="text-white font-bold text-sm">
+            🏆 Leaderboard
           </div>
         </div>
       </div>

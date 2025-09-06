@@ -164,8 +164,6 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-yellow-50 flex flex-col">
       <TournamentHeader 
         tournamentName={tournamentData?.tournamentName}
-        currentEnv={currentEnv}
-        onEnvChange={handleEnvChange}
         currentRound={tournamentData?.currentRound}
         viewingRound={viewingRound}
         setViewingRound={setViewingRound}
@@ -193,12 +191,7 @@ function App() {
 
         {/* Right Column - Fixed Scoreboard */}
         <div className="w-96 border-l border-purple-200 bg-white overflow-y-auto">
-          <div className="sticky top-0 bg-gradient-to-r from-purple-600 to-purple-700 text-white p-3">
-            <h2 className="text-lg font-nunito font-bold text-center">
-              🏆 Leaderboard
-            </h2>
-          </div>
-          <div className="p-4">
+          <div className="p-3">
             <Leaderboard 
               players={leaderboard} 
               isAdmin={isAdmin}
@@ -210,13 +203,13 @@ function App() {
       </div>
 
       {/* Admin Controls - Small at bottom */}
-      <div className="border-t border-purple-200 bg-purple-50 px-4 py-2">
+      <div className="border-t border-purple-200 bg-purple-50 px-4 py-1">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             {!isAdmin ? (
               <button
                 onClick={() => setShowAdminLogin(true)}
-                className="bg-purple-600 text-white px-3 py-1 rounded text-xs hover:bg-purple-700 transition-colors font-semibold"
+                className="bg-purple-600 text-white px-2 py-0.5 rounded text-xs hover:bg-purple-700 transition-colors font-semibold"
               >
                 Admin Login
               </button>
@@ -226,13 +219,47 @@ function App() {
                 {tournamentData?.currentRound < tournamentData?.totalRounds && (
                   <button
                     onClick={handleAdvanceRound}
-                    className="bg-yellow-400 text-purple-900 px-3 py-1 rounded text-xs hover:bg-yellow-300 transition-colors font-bold"
+                    className="bg-yellow-400 text-purple-900 px-2 py-0.5 rounded text-xs hover:bg-yellow-300 transition-colors font-bold"
                   >
                     Advance to Round {tournamentData.currentRound + 1}
                   </button>
                 )}
               </>
             )}
+          </div>
+          
+          {/* Environment Selector - Center */}
+          <div className="flex gap-1">
+            <button
+              onClick={() => handleEnvChange('PROD')}
+              className={`px-2 py-0.5 rounded text-xs font-bold transition-colors ${
+                currentEnv === 'PROD' 
+                  ? 'bg-purple-700 text-white' 
+                  : 'bg-purple-200 text-purple-700 hover:bg-purple-300'
+              }`}
+            >
+              LIVE
+            </button>
+            <button
+              onClick={() => handleEnvChange('SIT')}
+              className={`px-2 py-0.5 rounded text-xs font-bold transition-colors ${
+                currentEnv === 'SIT' 
+                  ? 'bg-yellow-400 text-purple-900' 
+                  : 'bg-purple-200 text-purple-700 hover:bg-purple-300'
+              }`}
+            >
+              SIT
+            </button>
+            <button
+              onClick={() => handleEnvChange('UAT')}
+              className={`px-2 py-0.5 rounded text-xs font-bold transition-colors ${
+                currentEnv === 'UAT' 
+                  ? 'bg-green-400 text-purple-900' 
+                  : 'bg-purple-200 text-purple-700 hover:bg-purple-300'
+              }`}
+            >
+              UAT
+            </button>
           </div>
           
           {/* FAIR-PLAY Branding - Small */}
