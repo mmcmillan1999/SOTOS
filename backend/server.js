@@ -208,7 +208,8 @@ app.get('/api/tournament/:env?', (req, res) => {
     currentRoundData,
     totalRounds: tournamentSchedule.metadata.rounds,
     tournamentName: tournamentState.name,
-    environment: env
+    environment: env,
+    schedule: tournamentSchedule.schedule // Include full schedule for navigation
   });
 });
 

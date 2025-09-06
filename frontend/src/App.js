@@ -19,6 +19,7 @@ function App() {
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [connected, setConnected] = useState(false);
   const [currentEnv, setCurrentEnv] = useState('PROD');
+  const [viewingRound, setViewingRound] = useState(null); // null means current round
 
   useEffect(() => {
     // Fetch initial tournament data
@@ -171,11 +172,8 @@ function App() {
       {/* Connection Status and Environment Selector - Moved to top bar */}
       <div className="bg-purple-50 border-b border-purple-200 px-4 py-2">
         <div className="flex justify-between items-center">
-          {/* Round Info */}
+          {/* Connection Status */}
           <div className="flex items-center gap-4">
-            <span className="bg-yellow-400 text-purple-900 px-3 py-1 rounded-full font-bold text-sm">
-              Round {tournamentData?.currentRound || 1} of {tournamentData?.totalRounds || 10}
-            </span>
             <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
               connected 
                 ? 'bg-green-100 text-green-800' 
@@ -245,21 +243,11 @@ function App() {
               isAdmin={isAdmin}
               onScoreSubmit={handleScoreSubmit}
               players={tournamentData?.players}
+              tournamentData={tournamentData}
+              currentEnv={currentEnv}
+              viewingRound={viewingRound}
+              setViewingRound={setViewingRound}
             />
-
-            {/* Bye Players */}
-            {tournamentData?.currentRoundData?.byePlayers && (
-              <div className="mt-4 bg-purple-50 rounded-lg p-3 border border-purple-200">
-                <h3 className="font-nunito font-semibold text-purple-800 text-sm mb-2">Byes this Round:</h3>
-                <div className="flex gap-2 flex-wrap">
-                  {tournamentData.currentRoundData.byePlayers.map(playerId => (
-                    <span key={playerId} className="bg-yellow-300 text-purple-900 px-2 py-1 rounded-full text-xs font-semibold">
-                      Player {playerId}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
