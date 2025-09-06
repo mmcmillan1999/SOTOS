@@ -16,10 +16,12 @@ const pool = new Pool({
 });
 
 // Middleware
+const corsOrigins = process.env.NODE_ENV === 'production' 
+  ? ['https://sotos-tournament.netlify.app', 'https://sotos.netlify.app', process.env.CORS_ORIGIN].filter(Boolean)
+  : ['http://localhost:3000'];
+
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? process.env.CORS_ORIGIN 
-    : 'http://localhost:3000',
+  origin: corsOrigins,
   credentials: true
 }));
 app.use(express.json());
@@ -27,10 +29,9 @@ app.use(express.json());
 // Socket.io setup
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.NODE_ENV === 'production' 
-      ? process.env.CORS_ORIGIN 
-      : 'http://localhost:3000',
-    methods: ['GET', 'POST']
+    origin: corsOrigins,
+    methods: ['GET', 'POST'],
+    credentials: true
   }
 });
 
