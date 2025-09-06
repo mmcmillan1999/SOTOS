@@ -5,6 +5,7 @@ import TournamentHeader from './components/TournamentHeader';
 import CourtDisplay from './components/CourtDisplay';
 import Leaderboard from './components/Leaderboard';
 import AdminPanel from './components/AdminPanel';
+import QRCodeDisplay from './components/QRCodeDisplay';
 import Footer from './components/Footer';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
@@ -13,8 +14,12 @@ const socket = io(API_URL);
 function App() {
   const [tournamentData, setTournamentData] = useState(null);
   const [leaderboard, setLeaderboard] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [adminUsername, setAdminUsername] = useState('');
+  const [isAdmin, setIsAdmin] = useState(() => {
+    return localStorage.getItem('sotosAdmin') === 'true';
+  });
+  const [adminUsername, setAdminUsername] = useState(() => {
+    return localStorage.getItem('sotosAdminUser') || '';
+  });
   const [loading, setLoading] = useState(true);
   const [showAdminLogin, setShowAdminLogin] = useState(false);
   const [currentEnv, setCurrentEnv] = useState('PROD');
@@ -101,6 +106,9 @@ function App() {
         setIsAdmin(true);
         setAdminUsername(username);
         setShowAdminLogin(false);
+        // Save to localStorage
+        localStorage.setItem('sotosAdmin', 'true');
+        localStorage.setItem('sotosAdminUser', username);
       }
     } catch (error) {
       alert('Invalid credentials');
@@ -206,6 +214,8 @@ function App() {
       <div className="border-t border-purple-200 bg-purple-50 px-4 py-1">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
+            {/* QR Code Button */}
+            <QRCodeDisplay currentEnv={currentEnv} />
             {!isAdmin ? (
               <button
                 onClick={() => setShowAdminLogin(true)}
@@ -224,6 +234,17 @@ function App() {
                     Advance to Round {tournamentData.currentRound + 1}
                   </button>
                 )}
+                <button
+                  onClick={() => {
+                    setIsAdmin(false);
+                    setAdminUsername('');
+                    localStorage.removeItem('sotosAdmin');
+                    localStorage.removeItem('sotosAdminUser');
+                  }}
+                  className="bg-red-500 text-white px-2 py-0.5 rounded text-xs hover:bg-red-600 transition-colors font-semibold"
+                >
+                  Logout
+                </button>
               </>
             )}
           </div>
