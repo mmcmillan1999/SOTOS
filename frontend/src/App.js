@@ -17,7 +17,6 @@ function App() {
   const [adminUsername, setAdminUsername] = useState('');
   const [loading, setLoading] = useState(true);
   const [showAdminLogin, setShowAdminLogin] = useState(false);
-  const [connected, setConnected] = useState(false);
   const [currentEnv, setCurrentEnv] = useState('PROD');
   const [viewingRound, setViewingRound] = useState(null); // null means current round
 
@@ -26,16 +25,14 @@ function App() {
     fetchTournamentData();
     fetchLeaderboard();
 
-    // Socket connection status
+    // Socket connection
     socket.on('connect', () => {
-      setConnected(true);
       console.log('Connected to tournament server');
       // Join the tournament room
       socket.emit('join-tournament', currentEnv);
     });
 
     socket.on('disconnect', () => {
-      setConnected(false);
       console.log('Disconnected from tournament server');
     });
 
@@ -167,69 +164,9 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-yellow-50 flex flex-col">
       <TournamentHeader 
         tournamentName={tournamentData?.tournamentName}
+        currentEnv={currentEnv}
+        onEnvChange={handleEnvChange}
       />
-
-      {/* Connection Status and Environment Selector - Moved to top bar */}
-      <div className="bg-purple-50 border-b border-purple-200 px-4 py-2">
-        <div className="flex justify-between items-center">
-          {/* Connection Status */}
-          <div className="flex items-center gap-4">
-            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-              connected 
-                ? 'bg-green-100 text-green-800' 
-                : 'bg-red-100 text-red-800'
-            }`}>
-              {connected ? '🟢 Live' : '🔴 Offline'}
-            </span>
-          </div>
-          
-          {/* Environment Selector - Horizontal */}
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-purple-700">Environment:</span>
-            <button
-              onClick={() => handleEnvChange('PROD')}
-              className={`px-3 py-1 rounded text-xs font-bold transition-colors ${
-                currentEnv === 'PROD' 
-                  ? 'bg-purple-600 text-white' 
-                  : 'bg-purple-100 text-purple-700 hover:bg-purple-200'
-              }`}
-            >
-              LIVE
-            </button>
-            <button
-              onClick={() => handleEnvChange('SIT')}
-              className={`px-3 py-1 rounded text-xs font-bold transition-colors ${
-                currentEnv === 'SIT' 
-                  ? 'bg-yellow-500 text-purple-900' 
-                  : 'bg-yellow-100 text-purple-700 hover:bg-yellow-200'
-              }`}
-            >
-              SIT
-            </button>
-            <button
-              onClick={() => handleEnvChange('UAT')}
-              className={`px-3 py-1 rounded text-xs font-bold transition-colors ${
-                currentEnv === 'UAT' 
-                  ? 'bg-green-500 text-white' 
-                  : 'bg-green-100 text-green-700 hover:bg-green-200'
-              }`}
-            >
-              UAT
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Environment Warning */}
-      {currentEnv !== 'PROD' && (
-        <div className={`px-4 py-1 text-center text-xs font-bold ${
-          currentEnv === 'SIT' 
-            ? 'bg-yellow-200 text-yellow-900' 
-            : 'bg-green-200 text-green-900'
-        }`}>
-          ⚠️ {currentEnv} ENVIRONMENT - Testing Only
-        </div>
-      )}
 
       {/* Main Content Area - Two Column Layout */}
       <div className="flex-1 flex overflow-hidden">

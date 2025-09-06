@@ -1,6 +1,6 @@
 import React from 'react';
 
-function TournamentHeader({ tournamentName }) {
+function TournamentHeader({ tournamentName, currentEnv, onEnvChange }) {
   return (
     <header className="bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg">
       <div className="container mx-auto px-4 py-3">
@@ -21,13 +21,47 @@ function TournamentHeader({ tournamentName }) {
           </svg>
           
           {/* Title */}
-          <div className="text-center">
+          <div className="text-center flex-1">
             <h1 className="text-2xl md:text-3xl font-nunito font-bold">
               {tournamentName || "SOTOS SYNDROME FUNDRAISER"}
             </h1>
             <p className="text-sm text-purple-100 font-inter">
               Pickleball Tournament • September 6th
             </p>
+          </div>
+          
+          {/* Environment Selector */}
+          <div className="flex gap-1">
+            <button
+              onClick={() => onEnvChange('PROD')}
+              className={`px-3 py-1 rounded text-xs font-bold transition-colors ${
+                currentEnv === 'PROD' 
+                  ? 'bg-white text-purple-700' 
+                  : 'bg-purple-500 text-white hover:bg-purple-400'
+              }`}
+            >
+              LIVE
+            </button>
+            <button
+              onClick={() => onEnvChange('SIT')}
+              className={`px-3 py-1 rounded text-xs font-bold transition-colors ${
+                currentEnv === 'SIT' 
+                  ? 'bg-yellow-300 text-purple-900' 
+                  : 'bg-purple-500 text-white hover:bg-purple-400'
+              }`}
+            >
+              SIT
+            </button>
+            <button
+              onClick={() => onEnvChange('UAT')}
+              className={`px-3 py-1 rounded text-xs font-bold transition-colors ${
+                currentEnv === 'UAT' 
+                  ? 'bg-green-300 text-purple-900' 
+                  : 'bg-purple-500 text-white hover:bg-purple-400'
+              }`}
+            >
+              UAT
+            </button>
           </div>
           
           {/* Mirror ribbon */}
