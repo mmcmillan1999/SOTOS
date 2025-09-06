@@ -253,7 +253,7 @@ app.post('/api/admin/login', (req, res) => {
   }
 });
 
-// Submit scores (admin only)
+// Submit or update scores (admin only)
 app.post('/api/scores/:env?', async (req, res) => {
   const { round, court, team1Score, team2Score } = req.body;
   const env = req.params.env || 'PROD';
@@ -264,7 +264,38 @@ app.post('/api/scores/:env?', async (req, res) => {
     const courtData = roundData.courts[court];
     const [p1, p2, p3, p4] = courtData;
     
-    // Update player stats
+    // Check if this is an update (score already exists)
+    const existingMatchIndex = tournamentState.matches.findIndex(
+      m => m.round === round && m.court === court
+    );
+    
+    // If updating, first reverse the old stats
+    if (existingMatchIndex !== -1) {
+      const oldMatch = tournamentState.matches[existingMatchIndex];
+      const oldTeam1Won = oldMatch.team1Score > oldMatch.team2Score;
+      
+      // Reverse old stats for team 1
+      const reverseStats = (playerId, won, pointsFor, pointsAgainst) => {
+        const player = tournamentState.players.find(p => p.id === playerId);
+        if (player) {
+          player.gamesPlayed--;
+          player.wins -= won ? 1 : 0;
+          player.losses -= won ? 0 : 1;
+          player.pointsFor -= pointsFor;
+          player.pointsAgainst -= pointsAgainst;
+        }
+      };
+      
+      reverseStats(p1, oldTeam1Won, oldMatch.team1Score, oldMatch.team2Score);
+      reverseStats(p2, oldTeam1Won, oldMatch.team1Score, oldMatch.team2Score);
+      reverseStats(p3, !oldTeam1Won, oldMatch.team2Score, oldMatch.team1Score);
+      reverseStats(p4, !oldTeam1Won, oldMatch.team2Score, oldMatch.team1Score);
+      
+      // Remove old match
+      tournamentState.matches.splice(existingMatchIndex, 1);
+    }
+    
+    // Update player stats with new scores
     const updatePlayerStats = (playerId, won, pointsFor, pointsAgainst) => {
       const player = tournamentState.players.find(p => p.id === playerId);
       if (player) {
