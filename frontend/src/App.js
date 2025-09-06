@@ -236,8 +236,15 @@ function App() {
         </div>
 
         {/* Right Column - Fixed Scoreboard */}
-        <div className={`${isMobile ? (mobileView === 'leaderboard' ? 'block w-full' : 'hidden') : 'w-96 border-l'} border-purple-200 bg-white overflow-y-auto`}>
-          <div className="p-3">
+        <div className={`${isMobile ? (mobileView === 'leaderboard' ? 'block w-full' : 'hidden') : 'w-96 border-l'} border-purple-200 bg-white overflow-y-auto max-h-screen`}>
+          {/* Leaderboard Header */}
+          <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white py-3 px-3 sticky top-0 z-10 shadow-md">
+            <h2 className="text-center font-nunito font-bold text-xl flex items-center justify-center gap-2">
+              <span className="text-2xl">🏆</span>
+              <span>Leaderboard</span>
+            </h2>
+          </div>
+          <div className="p-3 h-full">
             <Leaderboard 
               players={leaderboard} 
               isAdmin={isAdmin}
@@ -250,23 +257,23 @@ function App() {
       </div>
 
       {/* Admin Controls - Small at bottom */}
-      <div className="border-t border-purple-200 bg-purple-50 px-4 py-1">
+      <div className="border-t border-purple-200 bg-purple-50 px-4 py-2">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             {!isAdmin ? (
               <button
                 onClick={() => setShowAdminLogin(true)}
-                className="bg-purple-600 text-white px-2 py-0.5 rounded text-xs hover:bg-purple-700 transition-colors font-semibold"
+                className="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors font-semibold"
               >
                 Admin Login
               </button>
             ) : (
               <>
-                <span className="text-xs text-purple-700 font-semibold">Admin: {adminUsername}</span>
+                <span className="text-sm text-purple-700 font-semibold">Admin: {adminUsername}</span>
                 {tournamentData?.currentRound < tournamentData?.totalRounds && (
                   <button
                     onClick={handleAdvanceRound}
-                    className="bg-yellow-400 text-purple-900 px-2 py-0.5 rounded text-xs hover:bg-yellow-300 transition-colors font-bold"
+                    className="bg-yellow-400 text-purple-900 px-3 py-1 rounded text-sm hover:bg-yellow-300 transition-colors font-bold"
                   >
                     Advance to Round {tournamentData.currentRound + 1}
                   </button>
@@ -278,7 +285,7 @@ function App() {
                     localStorage.removeItem('sotosAdmin');
                     localStorage.removeItem('sotosAdminUser');
                   }}
-                  className="bg-red-500 text-white px-2 py-0.5 rounded text-xs hover:bg-red-600 transition-colors font-semibold"
+                  className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors font-semibold"
                 >
                   Logout
                 </button>
@@ -290,7 +297,7 @@ function App() {
           <div className="flex gap-1">
             <button
               onClick={() => handleEnvChange('PROD')}
-              className={`px-2 py-0.5 rounded text-xs font-bold transition-colors ${
+              className={`px-3 py-1 rounded text-sm font-bold transition-colors ${
                 currentEnv === 'PROD' 
                   ? 'bg-purple-700 text-white' 
                   : 'bg-purple-200 text-purple-700 hover:bg-purple-300'
@@ -300,7 +307,7 @@ function App() {
             </button>
             <button
               onClick={() => handleEnvChange('SIT')}
-              className={`px-2 py-0.5 rounded text-xs font-bold transition-colors ${
+              className={`px-3 py-1 rounded text-sm font-bold transition-colors ${
                 currentEnv === 'SIT' 
                   ? 'bg-yellow-400 text-purple-900' 
                   : 'bg-purple-200 text-purple-700 hover:bg-purple-300'
@@ -310,7 +317,7 @@ function App() {
             </button>
             <button
               onClick={() => handleEnvChange('UAT')}
-              className={`px-2 py-0.5 rounded text-xs font-bold transition-colors ${
+              className={`px-3 py-1 rounded text-sm font-bold transition-colors ${
                 currentEnv === 'UAT' 
                   ? 'bg-green-400 text-purple-900' 
                   : 'bg-purple-200 text-purple-700 hover:bg-purple-300'
@@ -321,7 +328,7 @@ function App() {
           </div>
           
           {/* FAIR-PLAY Branding - Small */}
-          <div className="text-xs text-purple-600">
+          <div className="text-sm text-purple-600">
             Powered by <span className="font-bold">FAIR-PLAY</span> | Text Matt: 801-549-8406
           </div>
         </div>

@@ -71,19 +71,19 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
           const hasScore = savedScore && (savedScore.team1Score !== undefined || savedScore.team2Score !== undefined);
           
           return (
-            <div key={index} className="bg-white rounded-lg border-2 border-purple-200 shadow-md overflow-hidden">
-              <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white p-2">
-                <h3 className="font-nunito font-bold text-center text-sm">
+            <div key={index} className="bg-white rounded-lg border-2 border-purple-200 shadow-lg hover:shadow-xl transition-all duration-200 overflow-hidden">
+              <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white p-3 shadow-md">
+                <h3 className="font-nunito font-bold text-center text-base">
                   Court {index + 1}
                 </h3>
               </div>
               
               <div className="p-3">
                 {/* Team 1 */}
-                <div className="bg-purple-50 rounded-lg p-2 mb-2 border border-purple-200">
+                <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-3 mb-2 border border-purple-300 shadow-sm">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1">
-                      <p className="text-xs font-semibold text-purple-700">Team 1</p>
+                      <p className="text-sm font-bold text-purple-700">Team 1</p>
                       {/* Serve indicator */}
                       <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" className="text-purple-600" title="Serves first">
                         {/* ball */}
@@ -99,7 +99,7 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                     </div>
                     {hasScore && editingScore !== matchKey ? (
                       <div className="flex items-center gap-1">
-                        <span className="text-lg font-bold text-purple-900">{savedScore.team1Score}</span>
+                        <span className="text-xl font-bold text-purple-900">{savedScore.team1Score}</span>
                         {isAdmin && isCurrentRound && (
                           <button
                             onClick={() => {
@@ -126,28 +126,28 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                           max="13"
                           value={scores[`court${index}_team1`] || ''}
                           onChange={(e) => handleScoreChange(index, 1, e.target.value)}
-                          className="w-16 px-1 py-0.5 border border-purple-300 rounded text-center text-sm"
+                          className="w-18 px-2 py-1 border-2 border-purple-300 rounded text-center text-base font-semibold"
                         />
                       )
                     )}
                   </div>
                   <div className="space-y-1 mt-1">
-                    <div className="bg-white px-2 py-1 rounded text-xs font-semibold text-purple-900 text-center">
+                    <div className="bg-white px-3 py-1.5 rounded text-sm font-semibold text-purple-900 text-center border border-gray-200">
                       {getPlayerName(p1)}
                     </div>
-                    <div className="bg-white px-2 py-1 rounded text-xs font-semibold text-purple-900 text-center">
+                    <div className="bg-white px-3 py-1.5 rounded text-sm font-semibold text-purple-900 text-center border border-gray-200">
                       {getPlayerName(p2)}
                     </div>
                   </div>
                 </div>
                 
                 {/* Team 2 */}
-                <div className="bg-yellow-50 rounded-lg p-2 mb-2 border border-yellow-300">
+                <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg p-3 mb-2 border border-yellow-400 shadow-sm">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-semibold text-yellow-700">Team 2</p>
+                    <p className="text-sm font-bold text-yellow-700">Team 2</p>
                     {hasScore && editingScore !== matchKey ? (
                       <div className="flex items-center gap-1">
-                        <span className="text-lg font-bold text-purple-900">{savedScore.team2Score}</span>
+                        <span className="text-xl font-bold text-purple-900">{savedScore.team2Score}</span>
                       </div>
                     ) : (
                       isAdmin && isCurrentRound && (
@@ -158,16 +158,16 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                           max="13"
                           value={scores[`court${index}_team2`] || ''}
                           onChange={(e) => handleScoreChange(index, 2, e.target.value)}
-                          className="w-16 px-1 py-0.5 border border-yellow-300 rounded text-center text-sm"
+                          className="w-18 px-2 py-1 border-2 border-yellow-300 rounded text-center text-base font-semibold"
                         />
                       )
                     )}
                   </div>
                   <div className="space-y-1 mt-1">
-                    <div className="bg-white px-2 py-1 rounded text-xs font-semibold text-purple-900 text-center">
+                    <div className="bg-white px-3 py-1.5 rounded text-sm font-semibold text-purple-900 text-center border border-gray-200">
                       {getPlayerName(p3)}
                     </div>
-                    <div className="bg-white px-2 py-1 rounded text-xs font-semibold text-purple-900 text-center">
+                    <div className="bg-white px-3 py-1.5 rounded text-sm font-semibold text-purple-900 text-center border border-gray-200">
                       {getPlayerName(p4)}
                     </div>
                   </div>
@@ -184,11 +184,11 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                           setEditingScore(null);
                         }
                       }}
-                      className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors text-xs"
+                      className="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors text-sm font-semibold"
                       title="Submit scores"
                     >
                       <span>✓</span>
-                      <span className="text-xs">{editingScore === matchKey ? 'Update' : 'Submit'}</span>
+                      <span className="text-sm">{editingScore === matchKey ? 'Update' : 'Submit'}</span>
                     </button>
                     {editingScore === matchKey && (
                       <button
@@ -200,11 +200,11 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                             [`court${index}_team2`]: ''
                           });
                         }}
-                        className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors text-xs"
+                        className="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors text-sm font-semibold"
                         title="Cancel editing"
                       >
                         <span>✕</span>
-                        <span className="text-xs">Cancel</span>
+                        <span className="text-sm">Cancel</span>
                       </button>
                     )}
                   </div>
@@ -213,7 +213,7 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                 {/* Winner Indicator */}
                 {hasScore && editingScore !== matchKey && (
                   <div className="text-center mt-2">
-                    <span className="text-xs font-semibold text-green-600">
+                    <span className="text-sm font-bold text-green-600"
                       {savedScore.team1Score > savedScore.team2Score ? 'Team 1 Wins!' : 'Team 2 Wins!'}
                     </span>
                   </div>
@@ -225,21 +225,21 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
         
         {/* Bye Players Card */}
         {displayRoundData?.byePlayers && (
-          <div className="bg-gray-100 rounded-lg border-2 border-gray-300 shadow-md overflow-hidden">
-            <div className="bg-gradient-to-r from-gray-500 to-gray-600 text-white p-2">
-              <h3 className="font-nunito font-bold text-center text-sm">
+          <div className="bg-gray-100 rounded-lg border-2 border-gray-300 shadow-lg hover:shadow-xl transition-all duration-200 overflow-hidden">
+            <div className="bg-gradient-to-r from-gray-500 to-gray-600 text-white p-3 shadow-md">
+              <h3 className="font-nunito font-bold text-center text-base">
                 Bye Players
               </h3>
             </div>
             <div className="p-3">
               <div className="space-y-2">
                 {displayRoundData.byePlayers.map(playerId => (
-                  <div key={playerId} className="bg-yellow-100 px-3 py-2 rounded text-sm font-semibold text-purple-900 text-center border border-yellow-300">
+                  <div key={playerId} className="bg-gradient-to-r from-yellow-100 to-yellow-200 px-4 py-2.5 rounded text-sm font-semibold text-purple-900 text-center border border-yellow-400 shadow-sm">
                     {getPlayerName(playerId)}
                   </div>
                 ))}
               </div>
-              <p className="text-xs text-gray-600 mt-2 text-center italic">
+              <p className="text-sm text-gray-600 mt-2 text-center italic">
                 Sitting out this round
               </p>
             </div>
@@ -250,18 +250,18 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
       {/* Next Round Preview */}
       {nextRoundData && displayRound === currentRound && (
         <div className="mt-6">
-          <h3 className="text-lg font-nunito font-bold text-purple-800 mb-3">
+          <h3 className="text-xl font-nunito font-bold text-purple-800 mb-3">
             On Deck - Round {nextRound}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 opacity-75">
             {nextRoundData.courts?.map((court, index) => {
               const [p1, p2, p3, p4] = court;
               return (
-                <div key={index} className="bg-purple-50 rounded-lg p-2 border border-purple-200">
-                  <p className="text-xs font-bold text-center text-purple-700 mb-1">Court {index + 1}</p>
-                  <div className="text-xs text-center">
+                <div key={index} className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-2 border border-purple-300 shadow-sm">
+                  <p className="text-sm font-bold text-center text-purple-700 mb-1">Court {index + 1}</p>
+                  <div className="text-sm text-center">
                     <span className="font-semibold">{getPlayerName(p1)} & {getPlayerName(p2)}</span>
-                    <span className="mx-1 text-purple-600">vs</span>
+                    <span className="mx-2 text-purple-600 font-bold">vs</span>
                     <span className="font-semibold">{getPlayerName(p3)} & {getPlayerName(p4)}</span>
                   </div>
                 </div>
