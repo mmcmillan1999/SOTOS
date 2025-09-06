@@ -322,38 +322,36 @@ app.get('/api/leaderboard/:env?', (req, res) => {
   const tournamentState = tournaments[env];
   const ironPlayers = [7, 14]; // Players who never get byes
   
-  // Apply factoring for iron players and sort
+  // Process players with true W-L but factored points
   const processedPlayers = tournamentState.players.map(player => {
-    if (ironPlayers.includes(player.id)) {
-      // Factor scores by 0.9 for iron players
-      return {
-        ...player,
-        displayWins: Math.round(player.wins * 0.9 * 10) / 10, // Round to 1 decimal
-        displayLosses: Math.round(player.losses * 0.9 * 10) / 10,
-        displayPointsFor: Math.round(player.pointsFor * 0.9),
-        displayPointsAgainst: Math.round(player.pointsAgainst * 0.9),
-        isFactored: true,
-        actualWins: player.wins,
-        actualLosses: player.losses,
-        actualPointsFor: player.pointsFor,
-        actualPointsAgainst: player.pointsAgainst
-      };
-    } else {
-      return {
-        ...player,
-        displayWins: player.wins,
-        displayLosses: player.losses,
-        displayPointsFor: player.pointsFor,
-        displayPointsAgainst: player.pointsAgainst,
-        isFactored: false
-      };
-    }
+    const gamesPlayed = player.wins + player.losses;
+    const winPercentage = gamesPlayed > 0 ? (player.wins / gamesPlayed) : 0;
+    
+    // Only factor points for iron players, not wins/losses
+    const isIronPlayer = ironPlayers.includes(player.id);
+    const adjustedPointsFor = isIronPlayer ? Math.round(player.pointsFor * 0.9) : player.pointsFor;
+    const adjustedPointsAgainst = isIronPlayer ? Math.round(player.pointsAgainst * 0.9) : player.pointsAgainst;
+    
+    return {
+      ...player,
+      winPercentage: Math.round(winPercentage * 1000) / 10, // Round to 1 decimal (e.g., 66.7)
+      adjustedPointsFor,
+      adjustedPointsAgainst,
+      adjustedDifferential: adjustedPointsFor - adjustedPointsAgainst,
+      isFactored: isIronPlayer
+    };
   });
   
+  // Sort by: 1) Win%, 2) Adjusted point differential, 3) Total wins (for now, H2H later)
   const sortedPlayers = processedPlayers.sort((a, b) => {
-    // Sort by factored wins, then by factored point differential
-    if (b.displayWins !== a.displayWins) return b.displayWins - a.displayWins;
-    return (b.displayPointsFor - b.displayPointsAgainst) - (a.displayPointsFor - a.displayPointsAgainst);
+    // Primary sort: Win percentage
+    if (b.winPercentage !== a.winPercentage) return b.winPercentage - a.winPercentage;
+    
+    // Secondary sort: Adjusted point differential
+    if (b.adjustedDifferential !== a.adjustedDifferential) return b.adjustedDifferential - a.adjustedDifferential;
+    
+    // Tertiary sort: Total wins (placeholder for H2H)
+    return b.wins - a.wins;
   });
   
   res.json(sortedPlayers);
