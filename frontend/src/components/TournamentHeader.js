@@ -1,4 +1,5 @@
 import React from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 
 function TournamentHeader({ tournamentName, currentRound, viewingRound, setViewingRound }) {
   const displayRound = viewingRound || currentRound;
@@ -50,6 +51,16 @@ function TournamentHeader({ tournamentName, currentRound, viewingRound, setViewi
           
           {/* Title with Ribbons - Center */}
           <div className="flex items-center justify-center gap-3">
+            {/* QR Code - Permanent Display */}
+            <div className="bg-white p-1 rounded">
+              <QRCodeSVG 
+                value="https://sotos-tournament.netlify.app"
+                size={40}
+                level="M"
+                fgColor="#8B5CF6"
+                bgColor="#FFFFFF"
+              />
+            </div>
             {/* Awareness ribbon - smaller */}
             <svg width="25" height="35" viewBox="0 0 60 80" className="inline-block">
             <path 

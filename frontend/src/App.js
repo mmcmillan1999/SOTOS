@@ -5,7 +5,6 @@ import TournamentHeader from './components/TournamentHeader';
 import CourtDisplay from './components/CourtDisplay';
 import Leaderboard from './components/Leaderboard';
 import AdminPanel from './components/AdminPanel';
-import QRCodeDisplay from './components/QRCodeDisplay';
 import Footer from './components/Footer';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
@@ -214,8 +213,6 @@ function App() {
       <div className="border-t border-purple-200 bg-purple-50 px-4 py-1">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
-            {/* QR Code Button */}
-            <QRCodeDisplay currentEnv={currentEnv} />
             {!isAdmin ? (
               <button
                 onClick={() => setShowAdminLogin(true)}
