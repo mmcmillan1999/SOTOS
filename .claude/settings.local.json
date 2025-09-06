@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Read(//c/Users/matth/OneDrive/Desktop/sluff-project/**)",
-      "Read(//c/Users/matth/OneDrive/Desktop/Projects/MAIOSC/**)"
+      "Read(//c/Users/matth/OneDrive/Desktop/Projects/MAIOSC/**)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

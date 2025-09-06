@@ -17,11 +17,23 @@ function App() {
   const [adminUsername, setAdminUsername] = useState('');
   const [loading, setLoading] = useState(true);
   const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [connected, setConnected] = useState(false);
 
   useEffect(() => {
     // Fetch initial tournament data
     fetchTournamentData();
     fetchLeaderboard();
+
+    // Socket connection status
+    socket.on('connect', () => {
+      setConnected(true);
+      console.log('Connected to tournament server');
+    });
+
+    socket.on('disconnect', () => {
+      setConnected(false);
+      console.log('Disconnected from tournament server');
+    });
 
     // Socket listeners
     socket.on('tournamentUpdate', (data) => {
@@ -35,6 +47,8 @@ function App() {
     });
 
     return () => {
+      socket.off('connect');
+      socket.off('disconnect');
       socket.off('tournamentUpdate');
       socket.off('roundAdvanced');
     };
@@ -102,10 +116,11 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-100 via-yellow-200 to-yellow-100">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-purple-600"></div>
-          <p className="mt-4 text-purple-800 font-nunito font-semibold">Loading tournament...</p>
+          <p className="mt-4 text-purple-800 font-nunito font-semibold text-xl">Loading tournament...</p>
+          <p className="mt-2 text-purple-600 font-inter">Sotos Syndrome Fundraiser</p>
         </div>
       </div>
     );
@@ -125,6 +140,17 @@ function App() {
         currentRound={tournamentData?.currentRound}
         totalRounds={tournamentData?.totalRounds}
       />
+
+      {/* Connection Status Indicator */}
+      <div className="fixed top-4 right-4 z-50">
+        <div className={`px-3 py-1 rounded-full text-sm font-semibold ${
+          connected 
+            ? 'bg-green-100 text-green-800 border border-green-300' 
+            : 'bg-red-100 text-red-800 border border-red-300'
+        }`}>
+          {connected ? '🟢 Live' : '🔴 Offline'}
+        </div>
+      </div>
 
       <div className="container mx-auto px-4 py-6">
         {/* Admin Controls */}

@@ -264,6 +264,15 @@ io.on('connection', (socket) => {
   });
 });
 
+// Health check endpoint for Render
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'healthy', 
+    message: 'Sotos Tournament Server Running',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Start server
 const PORT = process.env.PORT || 3001;
 
@@ -273,6 +282,7 @@ initDB().then(() => {
     🎾 Sotos Syndrome Fundraiser Tournament Server
     💜 Running on port ${PORT}
     💛 Supporting a great cause!
+    🎗️ Deployment: ${process.env.NODE_ENV || 'development'}
     `);
   });
 });
