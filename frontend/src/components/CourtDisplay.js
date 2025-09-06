@@ -97,7 +97,7 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                               strokeLinejoin="round"/>
                       </svg>
                     </div>
-                    {hasScore ? (
+                    {hasScore && editingScore !== matchKey ? (
                       <div className="flex items-center gap-1">
                         <span className="text-lg font-bold text-purple-900">{savedScore.team1Score}</span>
                         {isAdmin && isCurrentRound && (
@@ -106,8 +106,8 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                               setEditingScore(matchKey);
                               setScores({
                                 ...scores,
-                                [`court${index}_team1`]: savedScore.team1Score,
-                                [`court${index}_team2`]: savedScore.team2Score
+                                [`court${index}_team1`]: savedScore.team1Score.toString(),
+                                [`court${index}_team2`]: savedScore.team2Score.toString()
                               });
                             }}
                             className="text-purple-400 hover:text-purple-600 text-xs"
@@ -145,7 +145,7 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                 <div className="bg-yellow-50 rounded-lg p-2 mb-2 border border-yellow-300">
                   <div className="flex items-center justify-between">
                     <p className="text-xs font-semibold text-yellow-700">Team 2</p>
-                    {hasScore ? (
+                    {hasScore && editingScore !== matchKey ? (
                       <div className="flex items-center gap-1">
                         <span className="text-lg font-bold text-purple-900">{savedScore.team2Score}</span>
                       </div>
@@ -173,10 +173,10 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                   </div>
                 </div>
                 
-                {/* Submit Icon (Admin Only, Current Round Only, Editing or New Score) */}
+                {/* Submit/Cancel Buttons (Admin Only, Current Round Only, Editing or New Score) */}
                 {isAdmin && isCurrentRound && (editingScore === matchKey || (!hasScore && 
                  scores[`court${index}_team1`] && scores[`court${index}_team2`])) && (
-                  <div className="text-center mt-1">
+                  <div className="text-center mt-1 flex justify-center gap-1">
                     <button
                       onClick={() => {
                         submitScore(index);
@@ -190,6 +190,23 @@ function CourtDisplay({ roundData, currentRound, isAdmin, onScoreSubmit, players
                       <span>✓</span>
                       <span className="text-xs">{editingScore === matchKey ? 'Update' : 'Submit'}</span>
                     </button>
+                    {editingScore === matchKey && (
+                      <button
+                        onClick={() => {
+                          setEditingScore(null);
+                          setScores({
+                            ...scores,
+                            [`court${index}_team1`]: '',
+                            [`court${index}_team2`]: ''
+                          });
+                        }}
+                        className="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors text-xs"
+                        title="Cancel editing"
+                      >
+                        <span>✕</span>
+                        <span className="text-xs">Cancel</span>
+                      </button>
+                    )}
                   </div>
                 )}
                 

@@ -88,22 +88,19 @@ function Leaderboard({ players, isAdmin, onUpdatePlayerName, currentEnv, tournam
                   ) : (
                     <div className="flex items-center gap-1">
                       <span 
-                        className={`font-semibold text-purple-900 ${
-                          isAdmin ? 'cursor-pointer hover:text-purple-600' : 'cursor-pointer hover:text-purple-600'
-                        }`}
+                        className="font-semibold text-purple-900 cursor-pointer hover:text-purple-600"
                         onClick={() => isAdmin ? handleStartEdit(player) : setSelectedPlayer(player)}
-                        title={isAdmin ? 'Click to edit' : 'Click for details'}
+                        title={isAdmin ? 'Click to edit name' : 'Click for details'}
                       >
                         {player.name}
                       </span>
-                      {!isAdmin && (
-                        <span 
-                          className="text-purple-400 text-xs italic cursor-pointer hover:text-purple-600"
-                          onClick={() => setSelectedPlayer(player)}
-                        >
-                          ⓘ
-                        </span>
-                      )}
+                      <span 
+                        className="text-purple-400 text-xs italic cursor-pointer hover:text-purple-600"
+                        onClick={() => setSelectedPlayer(player)}
+                        title="View player details"
+                      >
+                        ⓘ
+                      </span>
                     </div>
                   )}
                 </td>
