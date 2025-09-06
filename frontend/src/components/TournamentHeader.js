@@ -51,8 +51,8 @@ function TournamentHeader({ tournamentName, currentRound, viewingRound, setViewi
           
           {/* Title with Ribbons - Center */}
           <div className="flex items-center justify-center gap-3">
-            {/* QR Code - Permanent Display */}
-            <div className="bg-white p-1 rounded">
+            {/* QR Code - Desktop Only */}
+            <div className="hidden md:block bg-white p-1 rounded">
               <QRCodeSVG 
                 value="https://sotos-tournament.netlify.app"
                 size={40}
