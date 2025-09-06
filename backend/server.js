@@ -61,13 +61,30 @@ const tournamentSchedule = {
   ]
 };
 
-// Player names
+// Player names - Optimally ordered for tier balance
 const playerNames = [
-  "Player 1", "Player 2", "Player 3", "Player 4", "Player 5",
-  "Player 6", "Player 7", "Player 8", "Player 9", "Player 10",
-  "Player 11", "Player 12", "Player 13", "Player 14", "Player 15",
-  "Player 16", "Player 17", "Player 18", "Player 19", "Player 20",
-  "Player 21", "Player 22"
+  "Mike",              // 1 - Middle tier
+  "Jesse",             // 2 - Bottom tier  
+  "Mark",              // 3 - Middle tier
+  "Kevin",             // 4 - Middle tier
+  "Aaron",             // 5 - Top tier
+  "Matt",              // 6 - Top tier
+  "Tug",               // 7 - Middle tier (Iron player)
+  "Coke",              // 8 - Middle tier
+  "Melissa",           // 9 - Middle tier
+  "Debbie",            // 10 - Middle tier
+  "Talin",             // 11 - Bottom tier
+  "Kylee",             // 12 - Bottom tier
+  "Jonny",             // 13 - Top tier
+  "Taylor",            // 14 - Middle tier (Iron player)
+  "Debbie's Husband",  // 15 - Middle tier
+  "Krista",            // 16 - Middle tier
+  "Jenny",             // 17 - Middle tier
+  "Shawn",             // 18 - Top tier
+  "Sheena",            // 19 - Bottom tier
+  "Rachel",            // 20 - Bottom tier
+  "Jenny F.",          // 21 - Middle tier
+  "Sandy"              // 22 - Top tier
 ];
 
 // Multiple tournament environments
@@ -82,7 +99,9 @@ const tournaments = {
       losses: 0,
       pointsFor: 0,
       pointsAgainst: 0,
-      gamesPlayed: 0
+      gamesPlayed: 0,
+      tier: index === 4 || index === 5 || index === 12 || index === 17 || index === 21 ? 'top' :
+            index === 1 || index === 10 || index === 11 || index === 18 || index === 19 ? 'bottom' : 'middle'
     })),
     matches: [],
     completedRounds: []

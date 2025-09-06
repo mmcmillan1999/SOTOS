@@ -1,0 +1,66 @@
+{
+  "event": "SOTOS Syndrome Fundraiser - September 6th",
+  "playerCount": 22,
+  "playersByPosition": {
+    "1": { "name": "Mike", "tier": "middle", "rank": 6 },
+    "2": { "name": "Jesse", "tier": "bottom", "rank": 18 },
+    "3": { "name": "Mark", "tier": "middle", "rank": 7 },
+    "4": { "name": "Kevin", "tier": "middle", "rank": 8 },
+    "5": { "name": "Aaron", "tier": "top", "rank": 1 },
+    "6": { "name": "Matt", "tier": "top", "rank": 2 },
+    "7": { "name": "Tug", "tier": "middle", "rank": 9, "ironPlayer": true },
+    "8": { "name": "Coke", "tier": "middle", "rank": 11 },
+    "9": { "name": "Melissa", "tier": "middle", "rank": 12 },
+    "10": { "name": "Debbie", "tier": "middle", "rank": 13 },
+    "11": { "name": "Talin", "tier": "bottom", "rank": 19 },
+    "12": { "name": "Kylee", "tier": "bottom", "rank": 20 },
+    "13": { "name": "Jonny", "tier": "top", "rank": 3 },
+    "14": { "name": "Taylor", "tier": "middle", "rank": 10, "ironPlayer": true },
+    "15": { "name": "Debbie's Husband", "tier": "middle", "rank": 14 },
+    "16": { "name": "Krista", "tier": "middle", "rank": 15 },
+    "17": { "name": "Jenny", "tier": "middle", "rank": 16 },
+    "18": { "name": "Shawn", "tier": "top", "rank": 4 },
+    "19": { "name": "Sheena", "tier": "bottom", "rank": 21 },
+    "20": { "name": "Rachel", "tier": "bottom", "rank": 22 },
+    "21": { "name": "Jenny F.", "tier": "middle", "rank": 17 },
+    "22": { "name": "Sandy", "tier": "top", "rank": 5 }
+  },
+  "tiers": {
+    "top": {
+      "positions": [5, 6, 13, 18, 22],
+      "players": ["Aaron", "Matt", "Jonny", "Shawn", "Sandy"],
+      "description": "Strongest players - rarely partnered together"
+    },
+    "middle": {
+      "positions": [1, 3, 4, 7, 8, 9, 10, 14, 15, 16, 17, 21],
+      "players": ["Mike", "Mark", "Kevin", "Tug", "Coke", "Melissa", "Debbie", "Taylor", "Debbie's Husband", "Krista", "Jenny", "Jenny F."],
+      "description": "Balanced middle tier - flexible partnerships"
+    },
+    "bottom": {
+      "positions": [2, 11, 12, 19, 20],
+      "players": ["Jesse", "Talin", "Kylee", "Sheena", "Rachel"],
+      "description": "Developing players - rarely partnered together, often get stronger partners"
+    }
+  },
+  "ironPlayers": {
+    "positions": [7, 14],
+    "players": ["Tug", "Taylor"],
+    "note": "Play all 10 rounds (no byes), points factored by 0.9x"
+  },
+  "expectedOutcomes": {
+    "partnerViolations": 4,
+    "goodMatchups": 22,
+    "violationDetails": [
+      "Round 5: Shawn & Sandy partner (both top tier)",
+      "Round 6: Sheena & Jesse partner (both bottom tier)",
+      "Round 6: Rachel & Talin partner (both bottom tier)",
+      "Round 9: Matt & Jonny partner (both top tier)"
+    ]
+  },
+  "notes": [
+    "This configuration minimizes same-skill partnerships",
+    "Weaker players will usually get stronger partners for balance",
+    "Strong players will face mixed competition",
+    "Iron players (Tug & Taylor) are well-suited for extra games"
+  ]
+}
